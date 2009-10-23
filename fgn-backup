@@ -32,37 +32,7 @@ dpkg --get-selections "*" > ${DPKGSELECTION}
 
 date | tee -a "${BACKUPLOG}"
 dump_mysql_dbs | tee -a "${BACKUPLOG}"
-
-rm -rf ${BACKUPCACHEDIR}/*.tar.gz
-mkdir -pv ${BACKUPCACHEDIR} | tee -a "${BACKUPLOG}"
-for partition in $BACKUPLIST; do
-
-    log_echo
-    log_echo Partition $partition:
-    log_echo
-
-    if [ ! -d $partition ]; then
-        log_echo
-        log_echo    "  WARNING: Backuplist not up to date - target: $partition"
-        log_echo    "           doesn't exist or isn't a directory: "
-        log_echo -n "           "
-        ls -ld $partition | tee -a "${BACKUPLOG}"
-        log_echo
-        continue
-    fi
-
-    cd $partition
-    if [ ! -f tar-exclude ]; then
-        touch tar-exclude
-    fi
-
-    partfile=`echo -n bak${partition}.tar.gz | tr '/' '_'`
-    fullpartfile=${BACKUPCACHEDIR}/${partfile}
-
-    log_echo -n "TAR: $fullpartfile "
-    tar $TARFLAGS $fullpartfile .
-    date | tee -a "${BACKUPLOG}"
-done
+tar_partitions | tee -a "${BACKUPLOG}"
 
 # only save files
 fi

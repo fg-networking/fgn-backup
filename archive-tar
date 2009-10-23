@@ -1,0 +1,35 @@
+# fgn-backup module to create tar archives of partitions
+
+tar_partitions()
+{
+    rm -rf ${BACKUPCACHEDIR}/*.tar.gz
+    mkdir -pv ${BACKUPCACHEDIR}
+    for partition in $BACKUPLIST; do
+
+        echo
+        echo Partition $partition:
+        echo
+
+        if [ ! -d $partition ]; then
+            echo
+            echo "  WARNING: Backuplist not up to date - target: $partition"
+            echo "           doesn't exist or isn't a directory: "
+            echo -n "           "
+            ls -ld $partition
+            echo
+            continue
+        fi
+
+        cd $partition
+        if [ ! -f tar-exclude ]; then
+            touch tar-exclude
+        fi
+
+        partfile=`echo -n bak${partition}.tar.gz | tr '/' '_'`
+        fullpartfile=${BACKUPCACHEDIR}/${partfile}
+
+        echo -n "TAR: $fullpartfile "
+        tar $TARFLAGS $fullpartfile .
+        date
+    done
+}
