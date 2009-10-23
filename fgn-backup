@@ -1,43 +1,16 @@
 #!/bin/sh
 
-#Filesystem           1K-blocks      Used Available Use% Mounted on
-#/dev/sda1              1008872    128756    828868  14% /
-#tmpfs                    20480         0     20480   0% /dev/shm
-#/dev/sda5              5110752    376632   4734120   8% /usr
-#/dev/sda6              5110752   3803008   1307744  75% 
-#/dev/sda7            230768484  41390708 189377776  18% /var
-#none                   1815832     47056   1768776   3% /tmp
-
-BACKUPLIST="/ /usr /var"
-BACKUPCACHEDIR="/home/jmayer/NOBACKUP"
-BACKUPDIR="/var/lib/backup"
-DB_BACKUP_PATH="/home/jmayer/BACKUP"
-BACKUPLOG="${BACKUPDIR}/backup.txt"
-PARTITIONLOG="${BACKUPDIR}/partitiontable.log"
-FTP_SERVER="backup189.rootmaster.info"
-FTP_USER="ftpuser"
-FTP_PASS="ftppassword"
-TOTAL_FTP_SPACE=250000
-
-TARFLAGS=" --create --one-file-system --gzip --exclude=NOBACKUP --exclude-from=./tar-exclude --file "
-DUMPFLAGS=" --opt --add-drop-table --quote-names "
-#
-# Datum ermitteln
-DATE1=`date +%F`
-TIME1=`date +%T`
-# use date only (no time information) for directory name on ftp server
-TIMESTAMP=`date +%F | tr -d '-'`
+# read configuration
+. /etc/fgn-backup.conf
 
 # true: create backup data and save to ftp server
 # false: only save files
 if [ 1 = 1 ]; then
 
-umask 077
-
 echo "#######################################" | tee "${BACKUPLOG}"
 echo "#_______ FTP Backup Nachricht ________#" | tee -a "${BACKUPLOG}"
 echo "#-------------------------------------#" | tee -a "${BACKUPLOG}"
-echo "#~Datum:~$DATE1~~Zeit:~$TIME1~~ #" | tee -a "${BACKUPLOG}"
+echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #" | tee -a "${BACKUPLOG}"
 echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #" | tee -a "${BACKUPLOG}"
 echo "#---------------Backuplog-------------#" | tee -a "${BACKUPLOG}"
 echo "#____________________________________ #" | tee -a "${BACKUPLOG}"
@@ -50,7 +23,7 @@ df | tee -a "${PARTITIONLOG}"
 echo "========= fstab ==============="|tee -a "${PARTITIONLOG}"
 cat /etc/fstab | tee -a "${PARTITIONLOG}"
 
-dpkg --get-selections "*" > ${BACKUPDIR}/dpkg-selections.log
+dpkg --get-selections "*" > ${DPKGSELECTION}
 
 prebackup()
 {
