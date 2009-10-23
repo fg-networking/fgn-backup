@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# unset variables are a script error
+set -u
+
 # read configuration
 . /etc/fgn-backup.conf
 
