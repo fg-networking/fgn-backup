@@ -3,6 +3,11 @@
 # read configuration
 . /etc/fgn-backup.conf
 
+# include function-modules
+for MODULE in $MODULELIST; do
+    . ${MODULEPATH}/${MODULE}
+done
+
 # true: create backup data and save to ftp server
 # false: only save files
 if [ 1 = 1 ]; then
@@ -25,23 +30,9 @@ cat /etc/fstab | tee -a "${PARTITIONLOG}"
 
 dpkg --get-selections "*" > ${DPKGSELECTION}
 
-prebackup()
-{
-    rm $DB_BACKUP_PATH/mysqldump_*.gz
-    mkdir -pv $DB_BACKUP_PATH
-    for i in $(mysql --defaults-file=/etc/mysql/debian.cnf -N --batch -e 'SHOW DATABASES;') ; do
-	echo -n "DB: $i "
-        mysqldump --defaults-file=/etc/mysql/debian.cnf $DUMPFLAGS --databases "$i" | gzip -c > "$DB_BACKUP_PATH/mysqldump_db_${i}.gz"
-	date
-    done
-
-    echo -n "DB all "
-    mysqldump --defaults-file=/etc/mysql/debian.cnf $DUMPFLAGS --all-databases | gzip -c > "$DB_BACKUP_PATH/mysqldump_all.gz"
-}
-
 date
-prebackup | tee -a "${BACKUPLOG}"
-date
+dump_mysql_dbs | tee -a "${BACKUPLOG}"
+
 rm -rf ${BACKUPCACHEDIR}/*.tar.gz
 mkdir -pv ${BACKUPCACHEDIR}
 for partition in $BACKUPLIST; do

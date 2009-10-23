@@ -1,0 +1,18 @@
+# fgn-backup module to dump MySQL databases
+
+dump_mysql_dbs()
+{
+    rm -f $DBDUMPDIR/mysqldump_*.gz
+    mkdir -pv $DBDUMPDIR
+    for db_name in $(mysql $MYSQLDEFAULTS -N --batch -e 'SHOW DATABASES;') ; do
+        echo -n "DB: $db_name "
+        mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --databases "$i" | \
+                  gzip -c > "${DBDUMPDIR}/${MYSQLPREFIX}_db_${db_name}.gz"
+        date
+    done
+
+    echo -n "DB all "
+    mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --all-databases | \
+              gzip -c > "${DBDUMPDIR}/mysqldump_all.gz"
+    date
+}
