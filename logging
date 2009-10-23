@@ -1,0 +1,13 @@
+# fgn-backup module providing logging functions
+
+# echo to stdout and logfile
+log_echo()
+{
+    echo "$@" | tee -a "${BACKUPLOG}"
+}
+
+# echo to stdout and partitionlogfile
+p_log_echo()
+{
+    echo "$@" | tee -a "${PARTITIONLOG}"
+}

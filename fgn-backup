@@ -12,20 +12,20 @@ done
 # false: only save files
 if [ 1 = 1 ]; then
 
-echo "#######################################" | tee "${BACKUPLOG}"
-echo "#_______ FTP Backup Nachricht ________#" | tee -a "${BACKUPLOG}"
-echo "#-------------------------------------#" | tee -a "${BACKUPLOG}"
-echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #" | tee -a "${BACKUPLOG}"
-echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #" | tee -a "${BACKUPLOG}"
-echo "#---------------Backuplog-------------#" | tee -a "${BACKUPLOG}"
-echo "#____________________________________ #" | tee -a "${BACKUPLOG}"
-echo "#######################################" | tee -a "${BACKUPLOG}"
+log_echo "#######################################"
+log_echo "#_______ FTP Backup Nachricht ________#"
+log_echo "#-------------------------------------#"
+log_echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #"
+log_echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #"
+log_echo "#---------------Backuplog-------------#"
+log_echo "#____________________________________ #"
+log_echo "#######################################"
 
-echo "========= fdisk -l =========" | tee "${PARTITIONLOG}"
+p_log_echo "========= fdisk -l ========="
 fdisk -l | tee -a "${PARTITIONLOG}"
-echo "========= df ===============" | tee -a "${PARTITIONLOG}"
+p_log_echo "========= df ==============="
 df | tee -a "${PARTITIONLOG}"
-echo "========= fstab ==============="|tee -a "${PARTITIONLOG}"
+p_log_echo "========= fstab ==============="
 cat /etc/fstab | tee -a "${PARTITIONLOG}"
 
 dpkg --get-selections "*" > ${DPKGSELECTION}
@@ -37,31 +37,31 @@ rm -rf ${BACKUPCACHEDIR}/*.tar.gz
 mkdir -pv ${BACKUPCACHEDIR}
 for partition in $BACKUPLIST; do
 
-    echo
-    echo Partition $partition:
-    echo
+    log_echo
+    log_echo Partition $partition:
+    log_echo
 
     if [ ! -d $partition ]; then
-	echo
-        echo    "  WARNING: Backuplist not up to date - target: $partition"
-	echo    "           doesn't exist or isn't a directory: "
-	echo -n "           "
-	ls -ld $partition
-	echo
-	continue
+        log_echo
+        log_echo    "  WARNING: Backuplist not up to date - target: $partition"
+        log_echo    "           doesn't exist or isn't a directory: "
+        log_echo -n "           "
+        ls -ld $partition | tee -a "${BACKUPLOG}"
+        log_echo
+        continue
     fi
 
     cd $partition
     if [ ! -f tar-exclude ]; then
-	touch tar-exclude
+        touch tar-exclude
     fi
 
     partfile=`echo -n bak${partition}.tar.gz | tr '/' '_'`
     fullpartfile=${BACKUPCACHEDIR}/${partfile}
 
-    echo -n "TAR: $fullpartfile "
+    log_echo -n "TAR: $fullpartfile "
     tar $TARFLAGS $fullpartfile .
-    date
+    date | tee -a "${BACKUPLOG}"
 done
 
 # only save files
@@ -70,8 +70,8 @@ fi
 cd ${BACKUPCACHEDIR}
 FTPDIR=${TIMESTAMP}
 # don't use "prompt" when already using -i
-echo -n "Starting FTP transfer: "
-date
+log_echo -n "Starting FTP transfer: "
+date | tee -a "${BACKUPLOG}"
 ftp -inv <<BACKUPENDE 2>&1 | tee -a "${BACKUPLOG}"
     open ${FTP_SERVER}
     user ${FTP_USER} ${FTP_PASS}
@@ -81,21 +81,21 @@ ftp -inv <<BACKUPENDE 2>&1 | tee -a "${BACKUPLOG}"
     mput *
 BACKUPENDE
 
-echo -n "Finished FTP transfer: "
-date
+log_echo -n "Finished FTP transfer: "
+date | tee -a "${BACKUPLOG}"
 
 # check free space on FTP server
 USED_FTP_SPACE=$(echo du -sm . | lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | cut -f1)
 NEEDED_FTP_SPACE=$(du -sm $BACKUPCACHEDIR | cut -f1)
 FREE_FTP_SPACE=$(($TOTAL_FTP_SPACE - $USED_FTP_SPACE))
-echo "Used space on FTP server (in MB): $USED_FTP_SPACE"
-echo "Free space on FTP server (in MB): $FREE_FTP_SPACE"
-echo "Current size of backup   (in MB): $NEEDED_FTP_SPACE"
+log_echo "Used space on FTP server (in MB): $USED_FTP_SPACE"
+log_echo "Free space on FTP server (in MB): $FREE_FTP_SPACE"
+log_echo "Current size of backup   (in MB): $NEEDED_FTP_SPACE"
 if [ $NEEDED_FTP_SPACE -ge $FREE_FTP_SPACE ]; then
-    echo -e "\nWARNING: not enough space left on FTP server for next backup"
+    log_echo -e "\nWARNING: not enough space left on FTP server for next backup"
 else
-    echo "There is space for $(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))" \
-         "backup(s) left."
+    log_echo "There is space for $(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))" \
+             "backup(s) left."
 fi
 
 exit 0
