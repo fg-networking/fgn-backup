@@ -30,11 +30,11 @@ cat /etc/fstab | tee -a "${PARTITIONLOG}"
 
 dpkg --get-selections "*" > ${DPKGSELECTION}
 
-date
+date | tee -a "${BACKUPLOG}"
 dump_mysql_dbs | tee -a "${BACKUPLOG}"
 
 rm -rf ${BACKUPCACHEDIR}/*.tar.gz
-mkdir -pv ${BACKUPCACHEDIR}
+mkdir -pv ${BACKUPCACHEDIR} | tee -a "${BACKUPLOG}"
 for partition in $BACKUPLIST; do
 
     log_echo
