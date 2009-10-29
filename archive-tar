@@ -26,7 +26,7 @@ tar_partitions()
             touch tar-exclude
         fi
 
-        partfile=`echo -n bak${partition}.tar.gz | tr '/' '_'`
+        partfile=$(echo -n bak${partition}.tar.gz | tr '/' '_')
         fullpartfile=${BACKUPCACHEDIR}/${partfile}
 
         echo -n "TAR: $fullpartfile "
