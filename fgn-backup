@@ -50,7 +50,6 @@ if [ 1 = 1 ]; then
 fi
 
 cd ${BACKUPCACHEDIR}
-FTPDIR=${TIMESTAMP}
 # don't use "prompt" when already using -i
 log_echo -n "Starting FTP transfer: "
 date | tee -a "${BACKUPLOG}"
@@ -60,6 +59,7 @@ ftp -inv <<BACKUPENDE 2>&1 | tee -a "${BACKUPLOG}"
     bin
     mkdir ${FTPDIR}
     cd ${FTPDIR}
+    pwd
     mput *
 BACKUPENDE
 
