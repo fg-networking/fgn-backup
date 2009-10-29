@@ -8,7 +8,7 @@ EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump
 CONFIGS    := $(wildcard fgn-backup.*)
-DOCS       := 
+DOCS       := AUTHORS
 EXAMPLES   := $(wildcard *.example*)
 SOURCES    := $(BIN) $(MODULES) $(CONFIGS)
 
@@ -31,6 +31,7 @@ install: $(SOURCES) version
 	    $(DESTDIR)/etc/cron.d/$(PKGNAME)
 	install -m 0600 -o root -g root fgn-backup.logrotate \
 	    $(DESTDIR)/etc/logrotate.d/$(PKGNAME)
+	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 	sed -i 's/@@VERSION@@/$(shell cat version)/' \
 	    $(DESTDIR)$(BINDIR)/$(BIN) \
