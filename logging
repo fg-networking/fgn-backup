@@ -1,4 +1,5 @@
 # fgn-backup module providing logging functions
+# version @@VERSION@@
 
 # echo to stdout and logfile
 log_echo()

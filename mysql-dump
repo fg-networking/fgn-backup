@@ -1,4 +1,5 @@
 # fgn-backup module to dump MySQL databases
+# version @@VERSION@@
 
 dump_mysql_dbs()
 {

@@ -3,7 +3,10 @@ PREFIX   := /usr/local
 BINDIR   := $(PREFIX)/bin
 LIBDIR   := $(PREFIX)/lib/fgn-backup
 MANDIR   := $(PREFIX)/share/man/man1
-SOURCES  := fgn-backup fgn-backup.* archive-tar logging mysql-dump
+BIN      := fgn-backup
+MODULES  := archive-tar logging mysql-dump
+CONFIGS  := $(wildcard fgn-backup.*)
+SOURCES  := $(BIN) $(MODULES) $(CONFIGS)
 
 all:
 	@echo Targets:
@@ -12,19 +15,20 @@ all:
 	@echo "  tgz     - create a pseudo-slackware-package of $(PKGNAME)"
 	@echo "  clean   - remove generated file (except archives/packages)"
 
-install: $(SOURCES)
+install: $(SOURCES) version
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)/etc/cron.d $(DESTDIR)/etc/logrotate.d
-	install -m 0700 -o root -g root fgn-backup $(DESTDIR)$(BINDIR)
-	install -m 0600 -o root -g root archive-tar $(DESTDIR)$(LIBDIR)
-	install -m 0600 -o root -g root logging $(DESTDIR)$(LIBDIR)
-	install -m 0600 -o root -g root mysql-dump $(DESTDIR)$(LIBDIR)
+	install -m 0700 -o root -g root $(BIN) $(DESTDIR)$(BINDIR)
+	install -m 0600 -o root -g root $(MODULES) $(DESTDIR)$(LIBDIR)
 	install -m 0600 -o root -g root fgn-backup.crontab \
 	    $(DESTDIR)/etc/cron.d/$(PKGNAME)
 	install -m 0600 -o root -g root fgn-backup.logrotate \
 	    $(DESTDIR)/etc/logrotate.d/$(PKGNAME)
+	sed -i 's/@@VERSION@@/$(shell cat version)/' \
+	    $(DESTDIR)$(BINDIR)/$(BIN) \
+	    $(addprefix $(DESTDIR)$(LIBDIR)/,$(MODULES))
 
 dist: $(SOURCES) version
 	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES)

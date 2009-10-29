@@ -1,4 +1,5 @@
 # fgn-backup module to create tar archives of partitions
+# version @@VERSION@@
 
 tar_partitions()
 {
