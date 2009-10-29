@@ -19,6 +19,7 @@ if [ 1 = 1 ]; then
     log_echo "#######################################"
     log_echo "#_______ FTP Backup Nachricht ________#"
     log_echo "#-------------------------------------#"
+    log_header_printf "# Host:~%29s~#\n" "$HOST"
     log_echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #"
     log_echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #"
     log_echo "#---------------Backuplog-------------#"

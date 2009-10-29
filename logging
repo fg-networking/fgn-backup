@@ -11,3 +11,12 @@ p_log_echo()
 {
     echo "$@" | tee -a "${PARTITIONLOG}"
 }
+
+# printf for header lines to stdout and logfile
+# the output of printf is modified:
+#  - every space is replaced with a tilde
+#  - every tilde is replaced with a space
+log_header_printf()
+{
+    printf "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
+}
