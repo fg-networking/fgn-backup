@@ -15,6 +15,9 @@ done
 # false: only save files
 if [ 1 = 1 ]; then
 
+# create log directory if needed
+    mkdir -pv "$BACKUPLOGDIR"
+
 # create backup (logfiles, DB dump, and tar archives of partitions)
     log_echo "#######################################"
     log_echo "#_______ FTP Backup Nachricht ________#"
