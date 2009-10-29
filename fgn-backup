@@ -34,17 +34,17 @@ if [ 1 = 1 ]; then
     log_echo "#######################################"
 
     p_log_echo "========= fdisk -l ========="
-    fdisk -l | tee -a "${PARTITIONLOG}"
+    fdisk -l 2>&1 | tee -a "${PARTITIONLOG}"
     p_log_echo "========= df ==============="
-    df | tee -a "${PARTITIONLOG}"
+    df 2>&1 | tee -a "${PARTITIONLOG}"
     p_log_echo "========= fstab ==============="
-    cat /etc/fstab | tee -a "${PARTITIONLOG}"
+    cat /etc/fstab 2>&1 | tee -a "${PARTITIONLOG}"
 
-    dpkg --get-selections "*" > ${DPKGSELECTION}
+    dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
 
     date | tee -a "${BACKUPLOG}"
-    dump_mysql_dbs | tee -a "${BACKUPLOG}"
-    tar_partitions | tee -a "${BACKUPLOG}"
+    dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
+    tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
 
 # only save files
 fi
