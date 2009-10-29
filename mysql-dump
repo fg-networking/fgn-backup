@@ -6,7 +6,7 @@ dump_mysql_dbs()
     mkdir -pv $DBDUMPDIR
     for db_name in $(mysql $MYSQLDEFAULTS -N --batch -e 'SHOW DATABASES;') ; do
         echo -n "DB: $db_name "
-        mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --databases "$i" | \
+        mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --databases "$db_name" | \
                   gzip -c > "${DBDUMPDIR}/${MYSQLPREFIX}_db_${db_name}.gz"
         date
     done
