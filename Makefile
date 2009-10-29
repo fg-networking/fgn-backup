@@ -1,12 +1,16 @@
-PKGNAME  := fgn-backup
-PREFIX   := /usr/local
-BINDIR   := $(PREFIX)/bin
-LIBDIR   := $(PREFIX)/lib/fgn-backup
-MANDIR   := $(PREFIX)/share/man/man1
-BIN      := fgn-backup
-MODULES  := archive-tar logging mysql-dump
-CONFIGS  := $(wildcard fgn-backup.*)
-SOURCES  := $(BIN) $(MODULES) $(CONFIGS)
+PKGNAME    := fgn-backup
+PREFIX     := /usr/local
+BINDIR     := $(PREFIX)/bin
+LIBDIR     := $(PREFIX)/lib/$(PKGNAME)
+MANDIR     := $(PREFIX)/share/man/man1
+DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
+EXAMPLEDIR := $(DOCDIR)/examples
+BIN        := fgn-backup
+MODULES    := archive-tar logging mysql-dump
+CONFIGS    := $(wildcard fgn-backup.*)
+DOCS       := 
+EXAMPLES   := $(wildcard *.example*)
+SOURCES    := $(BIN) $(MODULES) $(CONFIGS)
 
 all:
 	@echo Targets:
@@ -17,7 +21,8 @@ all:
 
 install: $(SOURCES) version
 	install -d -m 0755 -o root -g root \
-	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR)
+	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR) \
+	    $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)/etc/cron.d $(DESTDIR)/etc/logrotate.d
 	install -m 0700 -o root -g root $(BIN) $(DESTDIR)$(BINDIR)
@@ -26,6 +31,7 @@ install: $(SOURCES) version
 	    $(DESTDIR)/etc/cron.d/$(PKGNAME)
 	install -m 0600 -o root -g root fgn-backup.logrotate \
 	    $(DESTDIR)/etc/logrotate.d/$(PKGNAME)
+	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 	sed -i 's/@@VERSION@@/$(shell cat version)/' \
 	    $(DESTDIR)$(BINDIR)/$(BIN) \
 	    $(addprefix $(DESTDIR)$(LIBDIR)/,$(MODULES))
