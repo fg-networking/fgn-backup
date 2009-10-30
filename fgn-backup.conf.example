@@ -19,7 +19,7 @@ MODULELIST="logging mysql-dump archive-tar"
 # general configuration: this should fit any system, customize if really needed
 
 # where to find binaries
-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # where to find function-modules
 MODULEPATH="/usr/lib/fgn-backup"
 
