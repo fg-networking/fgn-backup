@@ -54,4 +54,4 @@ version:
 	printf "svn%05d" \
 	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
 
-.PHONY: all install dist clean
+.PHONY: all install dist clean version
