@@ -68,17 +68,6 @@ log_echo -n "Finished FTP transfer: "
 date | tee -a "${BACKUPLOG}"
 
 # check free space on FTP server
-USED_FTP_SPACE=$(echo du -sm . | lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | cut -f1)
-NEEDED_FTP_SPACE=$(du -sm $BACKUPCACHEDIR | cut -f1)
-FREE_FTP_SPACE=$(($TOTAL_FTP_SPACE - $USED_FTP_SPACE))
-log_echo "Used space on FTP server (in MB): $USED_FTP_SPACE"
-log_echo "Free space on FTP server (in MB): $FREE_FTP_SPACE"
-log_echo "Current size of backup   (in MB): $NEEDED_FTP_SPACE"
-if [ $NEEDED_FTP_SPACE -ge $FREE_FTP_SPACE ]; then
-    log_echo -e "\nWARNING: not enough space left on FTP server for next backup"
-else
-    log_echo "There is space for $(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))" \
-             "backup(s) left."
-fi
+check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
 
 exit 0

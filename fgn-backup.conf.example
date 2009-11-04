@@ -14,7 +14,7 @@ FTP_PASS="ftppassword"
 # total space available on FTP server (in MiB)
 TOTAL_FTP_SPACE=250000
 # fgn-backup modules to use
-MODULELIST="logging mysql-dump archive-tar"
+MODULELIST="logging mysql-dump archive-tar check-free-ftp-space"
 
 # general configuration: this should fit any system, customize if really needed
 
