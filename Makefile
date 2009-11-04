@@ -27,9 +27,9 @@ install: $(SOURCES) version
 	    $(DESTDIR)/etc/cron.d $(DESTDIR)/etc/logrotate.d
 	install -m 0700 -o root -g root $(BIN) $(DESTDIR)$(BINDIR)
 	install -m 0600 -o root -g root $(MODULES) $(DESTDIR)$(LIBDIR)
-	install -m 0600 -o root -g root fgn-backup.crontab \
+	install -m 0644 -o root -g root fgn-backup.crontab \
 	    $(DESTDIR)/etc/cron.d/$(PKGNAME)
-	install -m 0600 -o root -g root fgn-backup.logrotate \
+	install -m 0644 -o root -g root fgn-backup.logrotate \
 	    $(DESTDIR)/etc/logrotate.d/$(PKGNAME)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
