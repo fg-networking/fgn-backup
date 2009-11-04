@@ -50,22 +50,8 @@ if [ 1 = 1 ]; then
 # only save files
 fi
 
-cd ${BACKUPCACHEDIR}
-# don't use "prompt" when already using -i
-log_echo -n "Starting FTP transfer: "
-date | tee -a "${BACKUPLOG}"
-ftp -inv <<BACKUPENDE 2>&1 | tee -a "${BACKUPLOG}"
-    open ${FTP_SERVER}
-    user ${FTP_USER} ${FTP_PASS}
-    bin
-    mkdir ${FTPDIR}
-    cd ${FTPDIR}
-    pwd
-    mput *
-BACKUPENDE
-
-log_echo -n "Finished FTP transfer: "
-date | tee -a "${BACKUPLOG}"
+# upload archives to FTP server
+ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
 
 # check free space on FTP server
 check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"

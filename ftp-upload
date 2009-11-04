@@ -1,0 +1,22 @@
+# fgn-backup module to upload contents of cache directory to an FTP server
+# version @@VERSION@@
+
+ftp_upload()
+{
+    cd ${BACKUPCACHEDIR}
+    echo -n "Starting FTP transfer: "
+    date
+
+    ftp -inv <<-BACKUPENDE
+	open ${FTP_SERVER}
+	user ${FTP_USER} ${FTP_PASS}
+	bin
+	mkdir ${FTPDIR}
+	cd ${FTPDIR}
+	pwd
+	mput *
+	BACKUPENDE
+
+    echo -n "Finished FTP transfer: "
+    date
+}
