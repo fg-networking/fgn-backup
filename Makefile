@@ -38,7 +38,7 @@ install: $(SOURCES) version
 	    $(addprefix $(DESTDIR)$(LIBDIR)/,$(MODULES))
 
 dist: $(SOURCES) version
-	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES)
+	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES) Makefile
 
 tgz: $(SOURCES) version
 	BUILDDIR=$(shell mktemp -d) ; \
