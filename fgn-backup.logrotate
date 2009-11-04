@@ -1,5 +1,6 @@
 # install this file (as fgn-backup, if you like) into /etc/logrotate.d
 /var/log/fgn-backup/*.log {
+	nocreate
 	daily
 	dateext
 	missingok
