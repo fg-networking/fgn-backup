@@ -7,8 +7,10 @@ DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload
+CONFIGS    := fgn-backup.crontab fgn-backup.logrotate
 DOCS       := AUTHORS
 EXAMPLES   := $(wildcard *.example*)
+SOURCES    := $(addsuffix .in,$(BIN) $(MODULES))
 
 all:
 	@echo Targets:
@@ -17,7 +19,7 @@ all:
 	@echo "  tgz     - create a pseudo-slackware-package of $(PKGNAME)"
 	@echo "  clean   - remove generated files (except archives/packages)"
 
-install: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
+install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR) \
 	    $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
@@ -32,11 +34,11 @@ install: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
-dist: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
-	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(BIN) $(MODULES) \
-	    $(DOCS) $(EXAMPLES) Makefile
+dist: $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 \
+	    $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) Makefile
 
-tgz: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
+tgz: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
