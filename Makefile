@@ -7,19 +7,17 @@ DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload
-CONFIGS    := $(wildcard fgn-backup.*)
 DOCS       := AUTHORS
 EXAMPLES   := $(wildcard *.example*)
-SOURCES    := $(BIN) $(MODULES) $(CONFIGS)
 
 all:
 	@echo Targets:
 	@echo "  install - install $(PKGNAME) (understands PREFIX and DESTDIR)"
 	@echo "  dist    - create a tar.bz2 archive of $(PKGNAME)"
 	@echo "  tgz     - create a pseudo-slackware-package of $(PKGNAME)"
-	@echo "  clean   - remove generated file (except archives/packages)"
+	@echo "  clean   - remove generated files (except archives/packages)"
 
-install: $(SOURCES) version
+install: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR) \
 	    $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
@@ -33,15 +31,12 @@ install: $(SOURCES) version
 	    $(DESTDIR)/etc/logrotate.d/$(PKGNAME)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
-	sed -i 's/@@VERSION@@/$(shell cat version)/' \
-	    $(DESTDIR)$(BINDIR)/$(BIN) \
-	    $(addprefix $(DESTDIR)$(LIBDIR)/,$(MODULES))
 
-dist: clean $(SOURCES) version
-	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES) Makefile \
-	    version $(DOCS) $(EXAMPLES)
+dist: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
+	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(BIN) $(MODULES) \
+	    $(DOCS) $(EXAMPLES) Makefile
 
-tgz: clean $(SOURCES) version
+tgz: $(BIN) $(MODULES) $(DOCS) $(EXAMPLES)
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
@@ -49,10 +44,13 @@ tgz: clean $(SOURCES) version
 	$(RM) -rf $$BUILDDIR
 
 clean:
-	$(RM) version
+	$(RM) version $(BIN) $(MODULES)
+
+$(BIN) $(MODULES): $(addsuffix .in,$(BIN) $(MODULES)) version
+	sed 's/@@VERSION@@/$(shell cat version)/' <$(addsuffix .in,$@) >$@
 
 version:
 	printf "svn%05d" \
 	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
 
-.PHONY: all install dist clean
+.PHONY: all install dist clean version
