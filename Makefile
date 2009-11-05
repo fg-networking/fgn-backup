@@ -37,11 +37,11 @@ install: $(SOURCES) version
 	    $(DESTDIR)$(BINDIR)/$(BIN) \
 	    $(addprefix $(DESTDIR)$(LIBDIR)/,$(MODULES))
 
-dist: $(SOURCES) version
+dist: clean $(SOURCES) version
 	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES) Makefile \
 	    version $(DOCS) $(EXAMPLES)
 
-tgz: $(SOURCES) version
+tgz: clean $(SOURCES) version
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
@@ -55,4 +55,4 @@ version:
 	printf "svn%05d" \
 	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
 
-.PHONY: all install dist clean version
+.PHONY: all install dist clean
