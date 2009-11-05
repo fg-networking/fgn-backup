@@ -39,7 +39,7 @@ install: $(SOURCES) version
 
 dist: $(SOURCES) version
 	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 $(SOURCES) Makefile \
-	    version
+	    version $(DOCS) $(EXAMPLES)
 
 tgz: $(SOURCES) version
 	BUILDDIR=$(shell mktemp -d) ; \
