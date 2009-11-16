@@ -25,6 +25,7 @@ MODULEPATH="/usr/lib/fgn-backup"
 
 # flags for archiving and DB dump operations
 TARFLAGS=" --create --one-file-system --gzip --exclude=NOBACKUP --exclude-from=./tar-exclude --file "
+MAX_DB_DUMP_TRIES=10
 MYSQLDEFAULTS=" --defaults-file=/etc/mysql/debian.cnf "
 MYSQLDUMPFLAGS=" --opt --add-drop-table --quote-names "
 MYSQLPREFIX="mysqldump"

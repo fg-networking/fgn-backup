@@ -1,21 +1,38 @@
 # fgn-backup module to dump MySQL databases
 # version @@VERSION@@
 
-dump_mysql_dbs()
+dump_selected_mysql_db()
 {
-    rm -f $DBDUMPDIR/mysqldump_*.gz
-    mkdir -pv $DBDUMPDIR
-    for db_name in $(mysql $MYSQLDEFAULTS -N --batch -e 'SHOW DATABASES;') ; do
-        echo -n "DB: $db_name "
-        mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --databases "$db_name" | \
-                  gzip -c > "${DBDUMPDIR}/${MYSQLPREFIX}_db_${db_name}.gz"
-        date
+    test $# -eq 1 || return 1
+
+    local tries=0
+    local dump_option
+
+    case "$1" in
+        all) dump_option=" --all-databases "
+             dump_name="$1" ;;
+          *) dump_option=" --databases $1 "
+             dump_name="db_${1}";;
+    esac
+
+    printf "DB: $1 "
+    while test $tries -lt $MAX_DB_DUMP_TRIES && \
+          ! mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS $dump_option | \
+                 gzip -c > "${DBDUMPDIR}/${MYSQLPREFIX}_${dump_name}.gz"; do
+	tries=$(($tries + 1))
     done
 
-    echo -n "DB all "
-    mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS --all-databases | \
-              gzip -c > "${DBDUMPDIR}/mysqldump_all.gz"
     date
+}
+
+dump_mysql_dbs()
+{
+    rm -f $DBDUMPDIR/${MYSQLPREFIX}_*.gz
+    mkdir -pv $DBDUMPDIR
+    for db_name in $(mysql $MYSQLDEFAULTS -N --batch -e 'SHOW DATABASES;') ; do
+        dump_selected_mysql_db "$dbname"
+    done
+    dump_selected_mysql_db "all"
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:
