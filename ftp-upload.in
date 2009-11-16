@@ -20,3 +20,5 @@ ftp_upload()
     echo -n "Finished FTP transfer: "
     date
 }
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

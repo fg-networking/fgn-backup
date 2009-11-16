@@ -17,3 +17,5 @@ dump_mysql_dbs()
               gzip -c > "${DBDUMPDIR}/mysqldump_all.gz"
     date
 }
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

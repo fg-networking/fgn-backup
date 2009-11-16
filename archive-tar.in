@@ -34,3 +34,5 @@ tar_partitions()
         date
     done
 }
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

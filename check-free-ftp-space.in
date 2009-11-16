@@ -20,3 +20,5 @@ check_free_ftp_space()
              "backup(s) left."
     fi
 }
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

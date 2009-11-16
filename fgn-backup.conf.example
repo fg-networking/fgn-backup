@@ -40,3 +40,5 @@ HOST=$(hostname -f)
 
 # all files shall be root-accessible only
 umask 077
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

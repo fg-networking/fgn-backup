@@ -21,3 +21,5 @@ log_header_printf()
 {
     printf "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
 }
+
+# vim:filetype=sh:shiftwidth=4:expandtab:
