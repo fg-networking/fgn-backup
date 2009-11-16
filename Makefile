@@ -34,11 +34,11 @@ install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
-dist: $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+dist: clean $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 \
 	    $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) Makefile
 
-tgz: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
@@ -55,4 +55,4 @@ version:
 	printf "svn%05d" \
 	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
 
-.PHONY: all install dist clean version
+.PHONY: all install dist clean
