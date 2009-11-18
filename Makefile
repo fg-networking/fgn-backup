@@ -34,11 +34,11 @@ install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
-dist: clean $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+dist: clean $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 \
 	    $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) Makefile
 
-tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
