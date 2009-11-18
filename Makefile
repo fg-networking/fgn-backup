@@ -35,8 +35,13 @@ install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
 dist: clean $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
-	tar cfj $(PKGNAME)-$(shell cat version).tar.bz2 \
-	    $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) Makefile
+	TDIR=$(shell mktemp -d) ; \
+	DNAME=$(PKGNAME)-$(shell cat version) ; \
+	DDIR=$$TDIR/$$DNAME ; \
+	mkdir $$DDIR ; \
+	cp $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) Makefile version $$DDIR ; \
+	tar cvfj $$DNAME.tar.bz2 -C $$TDIR $$DNAME ; \
+	$(RM) -rf $$TDIR
 
 tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	BUILDDIR=$(shell mktemp -d) ; \
