@@ -14,10 +14,11 @@ SOURCES    := $(addsuffix .in,$(BIN) $(MODULES))
 
 all:
 	@echo Targets:
-	@echo "  install - install $(PKGNAME) (understands PREFIX and DESTDIR)"
-	@echo "  dist    - create a tar.bz2 archive of $(PKGNAME)"
-	@echo "  tgz     - create a pseudo-slackware-package of $(PKGNAME)"
-	@echo "  clean   - remove generated files (except archives/packages)"
+	@echo "  install    - install $(PKGNAME) (understands PREFIX and DESTDIR)"
+	@echo "  dist       - create a tar.bz2 archive of $(PKGNAME)"
+	@echo "  tgz        - create a pseudo-slackware-package of $(PKGNAME)"
+	@echo "  clean      - remove generated files (except archives/packages)"
+	@echo "  real-clean - remove generated files including archives/packages"
 
 install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -d -m 0755 -o root -g root \
@@ -53,6 +54,9 @@ tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 clean:
 	$(RM) version $(BIN) $(MODULES)
 
+real-clean: clean
+	$(RM) *.tar.bz2 *.tgz
+
 $(BIN) $(MODULES): $(addsuffix .in,$(BIN) $(MODULES)) version
 	sed 's/@@VERSION@@/$(shell cat version)/' <$(addsuffix .in,$@) >$@
 
@@ -60,4 +64,4 @@ version:
 	printf "svn%05d" \
 	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
 
-.PHONY: all install dist clean
+.PHONY: all install dist clean real-clean
