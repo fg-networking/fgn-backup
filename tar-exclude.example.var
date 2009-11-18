@@ -1,2 +1,5 @@
 cache
 tmp
+lib/mysql/*/*.MYI
+lib/mysql/*/*.MYD
+lib/mysql/*/*.frm
