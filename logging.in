@@ -22,4 +22,37 @@ log_header_printf()
     printf "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
 }
 
+init_logfiles()
+{
+# create log directory if needed
+    mkdir -pv "$BACKUPLOGDIR"
+
+# truncate log files
+    : > "$BACKUPLOG"
+    : > "$PARTITIONLOG"
+    : > "$DPKGSELECTION"
+
+# create backup (logfiles, DB dump, and tar archives of partitions)
+    log_echo "#######################################"
+    log_echo "#_______ FTP Backup Nachricht ________#"
+    log_echo "#-------------------------------------#"
+    log_header_printf "# Host:~%-29s~#\n" "$HOST"
+    log_echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #"
+    log_echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #"
+    log_echo "#---------------Backuplog-------------#"
+    log_echo "#____________________________________ #"
+    log_echo "#######################################"
+
+    p_log_echo "========= fdisk -l ========="
+    fdisk -l 2>&1 | tee -a "${PARTITIONLOG}"
+    p_log_echo "========= df ==============="
+    df 2>&1 | tee -a "${PARTITIONLOG}"
+    p_log_echo "========= fstab ==============="
+    cat /etc/fstab 2>&1 | tee -a "${PARTITIONLOG}"
+
+    dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
+
+    date | tee -a "${BACKUPLOG}"
+}
+
 # vim:filetype=sh:shiftwidth=4:expandtab:
