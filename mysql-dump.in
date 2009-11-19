@@ -30,7 +30,7 @@ dump_mysql_dbs()
     rm -f $DBDUMPDIR/${MYSQLPREFIX}_*.gz
     mkdir -pv $DBDUMPDIR
     for db_name in $(mysql $MYSQLDEFAULTS -N --batch -e 'SHOW DATABASES;') ; do
-        dump_selected_mysql_db "$dbname"
+        dump_selected_mysql_db "$db_name"
     done
     dump_selected_mysql_db "all"
 }
