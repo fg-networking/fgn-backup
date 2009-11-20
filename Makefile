@@ -24,7 +24,7 @@ EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload
 CONFIGS    := fgn-backup.crontab fgn-backup.logrotate
-DOCS       := AUTHORS
+DOCS       := AUTHORS COPYING
 EXAMPLES   := $(wildcard *.example*)
 SOURCES    := $(addsuffix .in,$(BIN) $(MODULES))
 
