@@ -27,6 +27,17 @@ for MODULE in $MODULELIST; do
     . ${MODULEPATH}/${MODULE}
 done
 
+# parse commandline
+while getopts "Vh" option; do
+    case $option in
+        V)      show_version; exit 0;;
+        h)      usage; exit 0;;
+        \?)     usage; exit 1;;
+        *)      echo "getopts error: getopts returned $option";;
+    esac
+done
+shift $(($OPTIND - 1))
+
 # true: create backup data and save to ftp server
 # false: only save files
 if [ 1 = 1 ]; then
