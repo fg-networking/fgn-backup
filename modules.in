@@ -25,6 +25,4 @@ for MODULE in $INFRASTRUCTURE $FEATURES; do
     . ${MODULEPATH}/${MODULE}
 done
 
-exit 0
-
 # vim:filetype=sh:shiftwidth=4:expandtab:
