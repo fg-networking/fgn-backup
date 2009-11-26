@@ -23,9 +23,7 @@ set -u
 . /etc/fgn-backup.conf
 
 # include function-modules
-for MODULE in $MODULELIST; do
-    . ${MODULEPATH}/${MODULE}
-done
+. ${MODULEPATH}/modules
 
 # parse commandline
 while getopts "Vh" option; do
