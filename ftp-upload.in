@@ -17,7 +17,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # this module must be enabled explicitly
-DO_FTP=0
+DO_FTP=${DO_FTP:=0}
 
 ftp_upload()
 {

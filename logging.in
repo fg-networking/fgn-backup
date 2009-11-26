@@ -16,7 +16,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # the logfiles are initialized by default
-DO_INIT_LOGS=1
+DO_INIT_LOGS=${DO_INIT_LOGS:=1}
 
 # echo to stdout and logfile
 log_echo()

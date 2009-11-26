@@ -16,7 +16,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # this module must be enabled explicitly
-DO_CHECK_FTP=0
+DO_CHECK_FTP=${DO_CHECK_FTP:=0}
 
 check_free_ftp_space()
 {

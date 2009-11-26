@@ -17,7 +17,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # this module is used by default
-DO_TAR=1
+DO_TAR=${DO_TAR:=1}
 
 tar_partitions()
 {
