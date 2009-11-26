@@ -30,6 +30,16 @@ while getopts "Vh" option; do
     case $option in
         V)      show_version; exit 0;;
         h)      usage; exit 0;;
+        i)      DO_INIT_LOGS=1;;
+        I)      DO_INIT_LOGS=0;;
+        m)      DO_MYSQL=1;;
+        M)      DO_MYSQL=0;;
+        t)      DO_TAR=1;;
+        T)      DO_TAR=0;;
+        f)      DO_FTP=1;;
+        F)      DO_FTP=0;;
+        c)      DO_CHECK_FTP=1;;
+        C)      DO_CHECK_FTP=0;;
         \?)     usage; exit 1;;
         *)      echo "getopts error: getopts returned $option";;
     esac
