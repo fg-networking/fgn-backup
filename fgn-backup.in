@@ -41,17 +41,17 @@ shift $(($OPTIND - 1))
 # true: create backup data and save to ftp server
 # false: only save files
 if [ 1 = 1 ]; then
-    init_logfiles
-    dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
-    tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
+    test $DO_INIT_LOGS -eq 1 && init_logfiles
+    test $DO_MYSQL -eq 1 && dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
+    test $DO_TAR -eq 1 && tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
 # only save files
 fi
 
 # upload archives to FTP server
-ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
+test $DO_FTP -eq 1 && ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
 
 # check free space on FTP server
-check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
+test $DO_CHECK_FTP -eq 1 && check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
 
 exit 0
 
