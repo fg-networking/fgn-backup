@@ -78,7 +78,6 @@ $(BIN) $(MODULES): $(addsuffix .in,$(BIN) $(MODULES)) version
 	sed 's/@@VERSION@@/$(shell cat version)/' <$(addsuffix .in,$@) >$@
 
 version:
-	printf "svn%05d" \
-	    $(shell svn info | sed -n 's/^Revision: \([0-9]\+\)$$/\1/p') > $@
+	printf "git%05d" $(shell git log | grep ^commit | wc -l) > $@
 
 .PHONY: all install dist clean real-clean
