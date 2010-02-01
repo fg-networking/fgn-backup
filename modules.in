@@ -1,5 +1,4 @@
 # fgn-backup meta-module to control inclusion of fgn-backup modules
-#!/bin/sh
 # version @@VERSION@@
 #   Copyright (C) 2009 Erik Auerswald <auerswald@fg-networking.de>
 #
