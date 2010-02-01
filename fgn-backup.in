@@ -20,6 +20,7 @@
 set -u
 
 # read configuration
+. @@LIBDIR@@/fgn-backup.global.conf
 . /etc/fgn-backup.conf
 
 # include function-modules

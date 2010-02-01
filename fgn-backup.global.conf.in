@@ -1,0 +1,43 @@
+# global configuration file for fgn-backup
+# version @@VERSION@@
+# settings in this file can be overridden in /etc/fgn-backup.conf
+
+# default configuration: override this to match your needs if necessary
+BACKUPLIST="/ /home /usr /var"
+BACKUPCACHEDIR="/var/cache/fgn-backup"
+BACKUPLOGDIR="/var/log/fgn-backup"
+DBDUMPDIR="/var/lib/fgn-backup"
+BACKUPLOG="${BACKUPLOGDIR}/backup.log"
+PARTITIONLOG="${BACKUPLOGDIR}/partitiontable.log"
+DPKGSELECTION="${BACKUPLOGDIR}/dpkg-selections.log"
+# there is no default for FTP server settings
+# ftp settings must be specified in /etc/fgn-backup.conf
+# (see @@DOCDIR@@/fgn-backup.conf.example)
+
+# general configuration: this should fit any system, customize if really needed
+
+# where to find binaries
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# where to find function-modules
+MODULEPATH="@@LIBDIR@@/fgn-backup"
+
+# flags for archiving and DB dump operations
+TARFLAGS=" --create --one-file-system --gzip --exclude=NOBACKUP --exclude-from=./tar-exclude --file "
+MAX_DB_DUMP_TRIES=10
+MYSQLDEFAULTS=" --defaults-file=/etc/mysql/debian.cnf "
+MYSQLDUMPFLAGS=" --opt --add-drop-table --quote-names "
+MYSQLPREFIX="mysqldump"
+
+# date and time formats
+DATE=$(date +%F)
+TIME=$(date +%T)
+# use date only (no time information) for directory name on ftp server
+TIMESTAMP=$(echo $DATE | tr -d '-')
+FTPDIR=${TIMESTAMP}
+# host name used in log header
+HOST=$(hostname -f)
+
+# all files shall be root-accessible only
+umask 077
+
+# vim:filetype=sh:shiftwidth=4:expandtab:

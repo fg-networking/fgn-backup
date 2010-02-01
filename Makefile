@@ -23,7 +23,7 @@ DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
-              show-help modules
+              show-help modules fgn-backup.global.conf
 CONFIGS    := fgn-backup.crontab fgn-backup.logrotate
 DOCS       := AUTHORS COPYING
 EXAMPLES   := $(wildcard *.example*)
@@ -75,7 +75,9 @@ real-clean: clean
 	$(RM) *.tar.bz2 *.tgz
 
 $(BIN) $(MODULES): $(addsuffix .in,$(BIN) $(MODULES)) version
-	sed 's/@@VERSION@@/$(shell cat version)/' <$(addsuffix .in,$@) >$@
+	sed -e 's/@@VERSION@@/$(shell cat version)/' \
+	    -e 's|@@LIBDIR@@|$(LIBDIR)|' \
+	    -e 's|@@DOCDIR@@|$(DOCDIR)|'  <$(addsuffix .in,$@) >$@
 
 version:
 	printf "git%05d" $(shell git log | grep ^commit | wc -l) > $@
