@@ -27,7 +27,7 @@ MAX_DB_DUMP_TRIES=10
 MYSQLDEFAULTS=" --defaults-file=/etc/mysql/debian.cnf "
 MYSQLDUMPFLAGS=" --opt --add-drop-table --quote-names "
 MYSQLPREFIX="mysqldump"
-OPENLDAPDUMP="openldapdump"
+OPENLDAPDUMP="openldapdump.ldif"
 
 # date and time formats
 DATE=$(date +%F)
