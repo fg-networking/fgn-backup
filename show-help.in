@@ -31,7 +31,7 @@ show_version()
 usage()
 {
     echo "Usage: $PROGNAME -V | -h"
-    echo "Usage: $PROGNAME [-i|-I] [-m|-M] [-t|-T] [-f|-F] [-c|-C]"
+    echo "Usage: $PROGNAME [-i|-I] [-m|-M] [-s|-S] [-t|-T] [-f|-F] [-c|-C]"
     echo "Options:"
     echo "    -V        print version and exit"
     echo "    -h        print this help and exit"
@@ -39,6 +39,8 @@ usage()
     echo "    -I        don't initialize log file"
     echo "    -m        dump MySQL databases"
     echo "    -M        don't dump MySQL databases      (default)"
+    echo "    -s        dump OpenLDAP database          (default)"
+    echo "    -S        don't dump OpenLDAP database    (default)"
     echo "    -t        create TAR archives             (default)"
     echo "    -T        don't create TAR archives"
     echo "    -f        upload archives to FTP server"
