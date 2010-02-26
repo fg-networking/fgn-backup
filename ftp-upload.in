@@ -21,6 +21,8 @@ DO_FTP=${DO_FTP:=0}
 
 ftp_upload()
 {
+    test -x $(which ftp) || { echo "ERROR: could not find ftp" ; return 1 ; }
+
     cd ${BACKUPCACHEDIR}
     echo -n "Starting FTP transfer: "
     date

@@ -20,6 +20,8 @@ DO_CHECK_FTP=${DO_CHECK_FTP:=0}
 
 check_free_ftp_space()
 {
+    test -x $(which lftp) || { echo "ERROR: could not find lftp" ; return 1 ; }
+
     local USED_FTP_SPACE=$(echo du -sm . | \
                            lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | \
                            cut -f1)
