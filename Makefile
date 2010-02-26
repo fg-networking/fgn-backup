@@ -17,7 +17,7 @@
 PKGNAME    := fgn-backup
 PREFIX     := /usr/local
 BINDIR     := $(PREFIX)/bin
-LIBDIR     := $(PREFIX)/lib/$(PKGNAME)
+LIBDIR     := $(PREFIX)/share/$(PKGNAME)
 MANDIR     := $(PREFIX)/share/man/man1
 DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
