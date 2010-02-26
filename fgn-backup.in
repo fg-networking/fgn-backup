@@ -52,6 +52,7 @@ shift $(($OPTIND - 1))
 if [ 1 = 1 ]; then
     test $DO_INIT_LOGS -eq 1 && init_logfiles
     test $DO_MYSQL -eq 1 && dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
+    test $DO_OPENLDAP -eq 1 && dump_openldap 2>&1 | tee -a "${BACKUPLOG}"
     test $DO_TAR -eq 1 && tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
 # only save files
 fi

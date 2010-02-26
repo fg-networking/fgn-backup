@@ -1,0 +1,31 @@
+# fgn-backup module to dump the OpenLDAP database
+# version @@VERSION@@
+#   Copyright (C) 2010 Erik Auerswald <auerswald@fg-networking.de>
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# this module needs to enabled explicitly
+DO_OPENLDAP=${DO_OPENLDAP:=0}
+
+dump_openldap()
+{
+    test -x $(which slapcat) || \
+        { echo "ERROR: could not find slapcat " ; return 1 ; }
+
+    rm -f $DBDUMPDIR/$OPENLDAPDUMP.gz
+    mkdir -pv $DBDUMPDIR
+    slapcat | gzip -c > $DBDUMPDIR/$OPENLDAPDUMP.gz
+}
+
+# vim:filetype=sh:shiftwidth=4:expandtab:
