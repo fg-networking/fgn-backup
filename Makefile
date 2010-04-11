@@ -21,6 +21,7 @@ LIBDIR     := $(PREFIX)/share/$(PKGNAME)
 MANDIR     := $(PREFIX)/share/man/man8
 DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
+LOGDIR     := /var/log/$(PKGNAME)
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
               show-help modules fgn-backup.global.conf openldap-dump
@@ -69,15 +70,17 @@ tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	$(RM) -rf $$BUILDDIR
 
 clean:
-	$(RM) version $(BIN) $(MODULES)
+	$(RM) version $(BIN) $(MODULES) $(CONFIGS)
 
 real-clean: clean
 	$(RM) *.tar.bz2 *.tgz
 
-$(BIN) $(MODULES): $(addsuffix .in,$(BIN) $(MODULES)) version
+$(BIN) $(MODULES) $(CONFIGS): $(addsuffix .in,$(BIN) $(MODULES)) version
 	sed -e 's/@@VERSION@@/$(shell cat version)/' \
 	    -e 's|@@LIBDIR@@|$(LIBDIR)|' \
-	    -e 's|@@DOCDIR@@|$(DOCDIR)|'  <$(addsuffix .in,$@) >$@
+	    -e 's|@@DOCDIR@@|$(DOCDIR)|' \
+	    -e 's|@@BINDIR@@|$(BINDIR)|' \
+	    -e 's|@@LOGDIR@@|$(LOGDIR)|' <$(addsuffix .in,$@) >$@
 
 version:
 	printf "git%05d" $(shell git log | grep ^commit | wc -l) > $@

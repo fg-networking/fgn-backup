@@ -1,0 +1,11 @@
+# install this file (as fgn-backup, if you like) into /etc/logrotate.d
+@@LOGDIR@@/*.log {
+	nocreate
+	daily
+	dateext
+	missingok
+	rotate 30
+	compress
+	notifempty
+	sharedscripts
+}
