@@ -49,7 +49,7 @@ init_logfiles()
     : > "$PARTITIONLOG"
     : > "$DPKGSELECTION"
 
-# create backup (logfiles, DB dump, and tar archives of partitions)
+# create backup logfiles
     log_echo "#######################################"
     log_echo "#_______ FTP Backup Nachricht ________#"
     log_echo "#-------------------------------------#"
