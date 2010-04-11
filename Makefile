@@ -23,7 +23,7 @@ DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
-              show-help modules fgn-backup.global.conf openldap-dump.in
+              show-help modules fgn-backup.global.conf openldap-dump
 CONFIGS    := fgn-backup.crontab fgn-backup.logrotate
 DOCS       := AUTHORS COPYING
 EXAMPLES   := $(wildcard *.example*)
