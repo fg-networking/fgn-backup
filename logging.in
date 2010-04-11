@@ -67,7 +67,8 @@ init_logfiles()
     p_log_echo "========= fstab ==============="
     cat /etc/fstab 2>&1 | tee -a "${PARTITIONLOG}"
 
-    dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
+    which dpkg > /dev/null 2>&1 && \
+        dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
 
     date | tee -a "${BACKUPLOG}"
 }
