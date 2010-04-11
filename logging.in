@@ -48,6 +48,7 @@ init_logfiles()
     : > "$BACKUPLOG"
     : > "$PARTITIONLOG"
     : > "$DPKGSELECTION"
+    : > "$RPMPACKAGES"
 
 # create backup logfiles
     log_echo "#######################################"
@@ -69,6 +70,9 @@ init_logfiles()
 
     which dpkg > /dev/null 2>&1 && \
         dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
+
+    which rpm > /dev/null 2>&1 && \
+        rpm --query --all > ${RPMPACKAGES} 2>&1
 
     date | tee -a "${BACKUPLOG}"
 }
