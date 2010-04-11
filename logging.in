@@ -47,8 +47,9 @@ init_logfiles()
 # truncate log files
     : > "$BACKUPLOG"
     : > "$PARTITIONLOG"
-    : > "$DPKGSELECTION"
-    : > "$RPMPACKAGES"
+
+# remove lists of selected packages
+    rm -f "$DPKGSELECTION" "$RPMPACKAGES"
 
 # create backup logfiles
     log_echo "#######################################"
