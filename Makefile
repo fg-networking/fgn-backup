@@ -79,6 +79,7 @@ $(BIN) $(MODULES) $(CONFIGS): $(addsuffix .in,$(BIN) $(MODULES)) version
 	sed -e 's/@@VERSION@@/$(shell cat version)/g' \
 	    -e 's|@@LIBDIR@@|$(LIBDIR)|g' \
 	    -e 's|@@DOCDIR@@|$(DOCDIR)|g' \
+	    -e 's|@@EXAMPLEDIR@@|$(EXAMPLEDIR)|g' \
 	    -e 's|@@BINDIR@@|$(BINDIR)|g' \
 	    -e 's|@@LOGDIR@@|$(LOGDIR)|g' <$(addsuffix .in,$@) >$@
 

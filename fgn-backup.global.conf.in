@@ -14,7 +14,7 @@ DPKGSELECTION="${BACKUPLOGDIR}/dpkg-selections.log"
 RPMPACKAGES="${BACKUPLOGDIR}/rpm-all-packages.log"
 # there is no default for FTP server settings
 # ftp settings must be specified in /etc/fgn-backup.conf
-# (see @@DOCDIR@@/fgn-backup.conf.example)
+# (see @@EXAMPLEDIR@@/fgn-backup.conf.example)
 
 # general configuration: this should fit any system, customize if really needed
 
