@@ -6,6 +6,7 @@
 BACKUPLIST="/ /home /usr /var"
 BACKUPCACHEDIR="/var/cache/fgn-backup"
 BACKUPLOGDIR="/var/log/fgn-backup"
+BACKUPRUNDIR="/var/run/fgn-backup"
 DBDUMPDIR="/var/lib/fgn-backup"
 BACKUPLOG="${BACKUPLOGDIR}/backup.log"
 PARTITIONLOG="${BACKUPLOGDIR}/partitiontable.log"

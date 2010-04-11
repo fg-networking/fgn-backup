@@ -49,6 +49,13 @@ while getopts "VhiImMSstTfFcC" option; do
 done
 shift $(($OPTIND - 1))
 
+# assure that there is only one instance of fgn-backup running
+mkdir -p "$BACKUPRUNDIR"
+test -e "${BACKUPRUNDIR}/fgn-backup.pid" && \
+  { printf "fgn-backup already running (PID %s), exiting\n" \
+    $(cat "${BACKUPRUNDIR}/fgn-backup.pid"); exit 1; }
+echo $$ > "${BACKUPRUNDIR}/fgn-backup.pid"
+
 # create backup logs
 test $DO_INIT_LOGS -eq 1 && init_logfiles
 # dump databases
