@@ -76,11 +76,11 @@ real-clean: clean
 	$(RM) *.tar.bz2 *.tgz
 
 $(BIN) $(MODULES) $(CONFIGS): $(addsuffix .in,$(BIN) $(MODULES)) version
-	sed -e 's/@@VERSION@@/$(shell cat version)/' \
-	    -e 's|@@LIBDIR@@|$(LIBDIR)|' \
-	    -e 's|@@DOCDIR@@|$(DOCDIR)|' \
-	    -e 's|@@BINDIR@@|$(BINDIR)|' \
-	    -e 's|@@LOGDIR@@|$(LOGDIR)|' <$(addsuffix .in,$@) >$@
+	sed -e 's/@@VERSION@@/$(shell cat version)/g' \
+	    -e 's|@@LIBDIR@@|$(LIBDIR)|g' \
+	    -e 's|@@DOCDIR@@|$(DOCDIR)|g' \
+	    -e 's|@@BINDIR@@|$(BINDIR)|g' \
+	    -e 's|@@LOGDIR@@|$(LOGDIR)|g' <$(addsuffix .in,$@) >$@
 
 version:
 	printf "git%05d" $(shell git log | grep ^commit | wc -l) > $@
