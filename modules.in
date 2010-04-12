@@ -17,7 +17,7 @@
 
 # fgn-backup modules included in this version
 INFRASTRUCTURE="logging show-help"
-FEATURES="mysql-dump archive-tar check-free-ftp-space ftp-upload"
+FEATURES="mysql-dump archive-tar check-free-ftp-space ftp-upload openldap-dump"
 
 # include function-modules
 for MODULE in $INFRASTRUCTURE $FEATURES; do
