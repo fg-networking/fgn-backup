@@ -35,8 +35,8 @@ while getopts "VhiImMSstTfFcC" option; do
         I)      DO_INIT_LOGS=0;;
         m)      DO_MYSQL=1;;
         M)      DO_MYSQL=0;;
-        s)      DO_OPENLDAP=1
-        S)      DO_OPENLDAP=0
+        s)      DO_OPENLDAP=1;;
+        S)      DO_OPENLDAP=0;;
         t)      DO_TAR=1;;
         T)      DO_TAR=0;;
         f)      DO_FTP=1;;

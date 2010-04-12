@@ -21,7 +21,7 @@ RPMPACKAGES="${BACKUPLOGDIR}/rpm-all-packages.log"
 # where to find binaries
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # where to find function-modules
-MODULEPATH="@@LIBDIR@@
+MODULEPATH="@@LIBDIR@@"
 
 # flags for archiving and DB dump operations
 TARFLAGS=" --create --one-file-system --gzip --exclude=NOBACKUP --exclude-from=./tar-exclude --file "
