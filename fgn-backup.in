@@ -68,6 +68,7 @@ test $DO_FTP -eq 1 && ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
 # check free space on server
 test $DO_CHECK_FTP -eq 1 && check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
 
+rm -f "${BACKUPRUNDIR}/fgn-backup.pid"
 exit 0
 
 # vim:filetype=sh:shiftwidth=4:expandtab:
