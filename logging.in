@@ -18,6 +18,12 @@
 # the logfiles are initialized by default
 DO_INIT_LOGS=${DO_INIT_LOGS:=1}
 
+# define log file names if necessary (can be overridden in config files)
+BACKUPLOG=${BACKUPLOG:="${BACKUPLOGDIR}/backup.log"}
+PARTITIONLOG=${PARTITIONLOG:="${BACKUPLOGDIR}/partitiontable.log"}
+DPKGSELECTION=${DPKGSELECTION:="${BACKUPLOGDIR}/dpkg-selections.log"}
+RPMPACKAGES=${RPMPACKAGES:="${BACKUPLOGDIR}/rpm-all-packages.log"}
+
 # echo to stdout and logfile
 log_echo()
 {

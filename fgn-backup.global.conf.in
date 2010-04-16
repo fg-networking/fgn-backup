@@ -8,10 +8,6 @@ BACKUPCACHEDIR="/var/cache/fgn-backup"
 BACKUPLOGDIR="/var/log/fgn-backup"
 BACKUPRUNDIR="/var/run/fgn-backup"
 DBDUMPDIR="/var/lib/fgn-backup"
-BACKUPLOG="${BACKUPLOGDIR}/backup.log"
-PARTITIONLOG="${BACKUPLOGDIR}/partitiontable.log"
-DPKGSELECTION="${BACKUPLOGDIR}/dpkg-selections.log"
-RPMPACKAGES="${BACKUPLOGDIR}/rpm-all-packages.log"
 # there is no default for FTP server settings
 # ftp settings must be specified in /etc/fgn-backup.conf
 # (see @@EXAMPLEDIR@@/fgn-backup.conf.example)
