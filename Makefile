@@ -18,17 +18,19 @@ PKGNAME    := fgn-backup
 PREFIX     := /usr/local
 BINDIR     := $(PREFIX)/sbin
 LIBDIR     := $(PREFIX)/share/$(PKGNAME)
+MODDIR     := $(LIBDIR)/modules.d
 MANDIR     := $(PREFIX)/share/man/man8
 DOCDIR     := $(PREFIX)/share/doc/$(PKGNAME)
 EXAMPLEDIR := $(DOCDIR)/examples
 LOGDIR     := /var/log/$(PKGNAME)
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
-              show-help modules fgn-backup.global.conf openldap-dump
+              show-help modules openldap-dump
+GCONFIGS   := fgn-backup.global.conf
 CONFIGS    := fgn-backup.crontab fgn-backup.logrotate
 DOCS       := AUTHORS COPYING
 EXAMPLES   := $(wildcard *.example*)
-SOURCES    := $(addsuffix .in,$(BIN) $(MODULES))
+SOURCES    := $(addsuffix .in,$(BIN) $(GCONFIGS) $(MODULES))
 
 all:
 	@echo Targets:
@@ -38,14 +40,15 @@ all:
 	@echo "  clean      - remove generated files (except archives/packages)"
 	@echo "  real-clean - remove generated files including archives/packages"
 
-install: $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES)
+install: $(BIN) $(MODULES) $(GCONFIGS) $(CONFIGS) $(DOCS) $(EXAMPLES)
 	install -d -m 0755 -o root -g root \
-	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MANDIR) \
-	    $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
+	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MODDIR) \
+	    $(DESTDIR)$(MANDIR) $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)/etc/cron.d $(DESTDIR)/etc/logrotate.d
 	install -m 0755 -o root -g root $(BIN) $(DESTDIR)$(BINDIR)
-	install -m 0644 -o root -g root $(MODULES) $(DESTDIR)$(LIBDIR)
+	install -m 0644 -o root -g root $(GCONFIGS) $(DESTDIR)$(LIBDIR)
+	install -m 0644 -o root -g root $(MODULES) $(DESTDIR)$(MODDIR)
 	install -m 0644 -o root -g root fgn-backup.crontab \
 	    $(DESTDIR)/etc/cron.d/$(PKGNAME)
 	install -m 0644 -o root -g root fgn-backup.logrotate \
@@ -62,7 +65,7 @@ dist: clean $(SOURCES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	tar cvfj $$DNAME.tar.bz2 -C $$TDIR $$DNAME ; \
 	$(RM) -rf $$TDIR
 
-tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
+tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(GCONFIGS) $(DOCS) $(EXAMPLES) version
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR \
@@ -70,14 +73,16 @@ tgz: clean $(BIN) $(MODULES) $(CONFIGS) $(DOCS) $(EXAMPLES) version
 	$(RM) -rf $$BUILDDIR
 
 clean:
-	$(RM) version $(BIN) $(MODULES) $(CONFIGS)
+	$(RM) version $(BIN) $(MODULES) $(CONFIGS) $(GCONFIGS)
 
 real-clean: clean
 	$(RM) *.tar.bz2 *.tgz
 
-$(BIN) $(MODULES) $(CONFIGS): $(addsuffix .in,$(BIN) $(MODULES)) version
+$(BIN) $(MODULES) $(CONFIGS) $(GCONFIGS): $(addsuffix .in,$(BIN) $(MODULES)) \
+                                          version
 	sed -e 's/@@VERSION@@/$(shell cat version)/g' \
 	    -e 's|@@LIBDIR@@|$(LIBDIR)|g' \
+	    -e 's|@@MODDIR@@|$(MODDIR)|g' \
 	    -e 's|@@DOCDIR@@|$(DOCDIR)|g' \
 	    -e 's|@@EXAMPLEDIR@@|$(EXAMPLEDIR)|g' \
 	    -e 's|@@BINDIR@@|$(BINDIR)|g' \
