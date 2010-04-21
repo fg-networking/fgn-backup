@@ -24,7 +24,7 @@ ftp_upload()
     test -x $(which ftp) || { echo "ERROR: could not find ftp" ; return 1 ; }
 
     cd ${BACKUPCACHEDIR}
-    echo -n "Starting FTP transfer: "
+    printf "Starting FTP transfer: "
     date
 
     ftp -inv <<-BACKUPENDE
@@ -37,7 +37,7 @@ ftp_upload()
 	mput *
 	BACKUPENDE
 
-    echo -n "Finished FTP transfer: "
+    printf "Finished FTP transfer: "
     date
 }
 
