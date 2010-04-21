@@ -48,6 +48,8 @@ while getopts "VhiImMSstTfFcC" option; do
     esac
 done
 shift $(($OPTIND - 1))
+test $# -eq 0 || \
+    { echo "error: non-option command line arguments given"; exit 1; }
 
 # assure that there is only one instance of fgn-backup running
 mkdir -p "$BACKUPRUNDIR"
