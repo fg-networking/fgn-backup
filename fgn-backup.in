@@ -43,13 +43,13 @@ while getopts "VhiImMSstTfFcC" option; do
         F)      DO_FTP=0;;
         c)      DO_CHECK_FTP=1;;
         C)      DO_CHECK_FTP=0;;
-        \?)     usage; exit 1;;
+        \?)     echo "error: unknown option -$option"; usage; exit 1;;
         *)      echo "getopts error: getopts returned $option";;
     esac
 done
 shift $(($OPTIND - 1))
 test $# -eq 0 || \
-    { echo "error: non-option command line arguments given"; exit 1; }
+    { echo "error: non-option command line argument(s) given"; usage; exit 1; }
 
 # assure that there is only one instance of fgn-backup running
 mkdir -p "$BACKUPRUNDIR"
