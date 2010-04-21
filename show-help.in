@@ -28,6 +28,20 @@ show_version()
     echo "Licensed under GPLv3+"
 }
 
+prdef()
+{
+    test $# -eq 1 || return 1
+    test $1 -eq 1 && printf "(default)"
+    return 0
+}
+
+prndef()
+{
+    test $# -eq 1 || return 1
+    test $1 -eq 0 && printf "(default)"
+    return 0
+}
+
 usage()
 {
     echo "Usage: $PROGNAME -V | -h"
@@ -35,18 +49,18 @@ usage()
     echo "Options:"
     echo "    -V        print version and exit"
     echo "    -h        print this help and exit"
-    echo "    -i        initialize log file             (default)"
-    echo "    -I        don't initialize log file"
-    echo "    -m        dump MySQL databases"
-    echo "    -M        don't dump MySQL databases      (default)"
-    echo "    -s        dump OpenLDAP database"
-    echo "    -S        don't dump OpenLDAP database    (default)"
-    echo "    -t        create TAR archives             (default)"
-    echo "    -T        don't create TAR archives"
-    echo "    -f        upload archives to FTP server"
-    echo "    -F        don't upload to FTP Server      (default)"
-    echo "    -c        check FTP server space"
-    echo "    -C        don't check FTP server space    (default)"
+    echo "    -i        initialize log file             $(prdef $DO_INIT_LOGS)"
+    echo "    -I        don't initialize log file       $(prndef $DO_INIT_LOGS)"
+    echo "    -m        dump MySQL databases            $(prdef $DO_MYSQL)"
+    echo "    -M        don't dump MySQL databases      $(prndef $DO_MYSQL)"
+    echo "    -s        dump OpenLDAP database          $(prdef $DO_OPENLDAP)"
+    echo "    -S        don't dump OpenLDAP database    $(prndef $DO_OPENLDAP)"
+    echo "    -t        create TAR archives             $(prdef $DO_TAR)"
+    echo "    -T        don't create TAR archives       $(prndef $DO_TAR)"
+    echo "    -f        upload archives to FTP server   $(prdef $DO_FTP)"
+    echo "    -F        don't upload to FTP Server      $(prndef $DO_FTP)"
+    echo "    -c        check FTP server space          $(prdef $DO_CHECK_FTP)"
+    echo "    -C        don't check FTP server space    $(prndef $DO_CHECK_FTP)"
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:
