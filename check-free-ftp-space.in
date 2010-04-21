@@ -22,7 +22,7 @@ check_free_ftp_space()
 {
     test -x $(which lftp) || { echo "ERROR: could not find lftp" ; return 1 ; }
 
-    local USED_FTP_SPACE=$(echo du -sm . | \
+    local USED_FTP_SPACE=$(printf "du -sm .\n" | \
                            lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | \
                            cut -f1)
     local NEEDED_FTP_SPACE=$(du -sm $BACKUPCACHEDIR | cut -f1)
@@ -33,7 +33,7 @@ check_free_ftp_space()
     echo "Current size of backup   (in MB): $NEEDED_FTP_SPACE"
 
     if [ $NEEDED_FTP_SPACE -ge $FREE_FTP_SPACE ]; then
-        echo -e "\nWARNING: not enough space left on FTP server for next backup"
+        printf "\nWARNING: not enough space left on FTP server for next backup\n"
     else
         echo "There is space for $(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))" \
              "backup(s) left."
