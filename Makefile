@@ -35,7 +35,7 @@ SOURCES    := $(addsuffix .in,$(BIN) $(GCONFIGS) $(MODULES) $(EXAMPLES))
 
 all:
 	@echo Targets:
-	@echo "  install    - install $(PKGNAME) (understands PREFIX and DESTDIR)"
+	@echo "  install    - install $(PKGNAME) (supports PREFIX and DESTDIR)"
 	@echo "  dist       - create a tar.bz2 archive of $(PKGNAME)"
 	@echo "  tgz        - create a pseudo-slackware-package of $(PKGNAME)"
 	@echo "  clean      - remove generated files (except archives/packages)"
