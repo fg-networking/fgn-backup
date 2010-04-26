@@ -51,12 +51,12 @@ install: $(BIN) $(MODULES) $(GCONFIGS) $(DOCS) $(EXAMPLES)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
-dist: clean $(SOURCES) $(GCONFIGS) $(DOCS) $(EXAMPLES) version
+dist: clean $(SOURCES) $(DOCS) version
 	TDIR=$(shell mktemp -d) ; \
 	DNAME=$(PKGNAME)-$(shell cat version) ; \
 	DDIR=$$TDIR/$$DNAME ; \
 	mkdir $$DDIR ; \
-	cp $(SOURCES) $(GCONFIGS) $(DOCS) $(EXAMPLES) Makefile version $$DDIR; \
+	cp $(SOURCES) $(DOCS) Makefile version $$DDIR; \
 	tar cvfj $$DNAME.tar.bz2 -C $$TDIR $$DNAME ; \
 	$(RM) -rf $$TDIR
 
