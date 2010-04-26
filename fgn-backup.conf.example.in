@@ -1,4 +1,4 @@
-# configuration file for fgn-backup
+# configuration file for fgn-backup (version @@VERSION@@)
 
 # site-specific configuration: adjust this to match your needs
 BACKUPLIST="/ /home /usr /var"
