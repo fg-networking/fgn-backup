@@ -1,3 +1,5 @@
-# install this file (as fgn-backup, if you like) into /etc/cron.d
+# fgn-backup crontab version @@VERSION@@
+# adjust this file as needed and install it into /etc/cron.d
+#
 # m h dom mon dow user command
   58 1  *   *   *  root test -x @@BINDIR@@/fgn-backup && @@BINDIR@@/fgn-backup

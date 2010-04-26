@@ -1,4 +1,7 @@
-# install this file (as fgn-backup, if you like) into /etc/logrotate.d
+# fgn-backup logrotate config version @@VERSION@@
+# if you want to use logrotate to keep old backup log files for some time,
+# adjust this file as needed and install it into /etc/logrotate.d
+#
 @@LOGDIR@@/*.log {
 	nocreate
 	daily
