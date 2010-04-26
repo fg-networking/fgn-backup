@@ -28,10 +28,12 @@ MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
               show-help modules openldap-dump
 GCONFIGS   := fgn-backup.global.conf
 DOCS       := AUTHORS COPYING INSTALL
+MANPAGE    := $(PKGNAME).8
 EXAMPLES   := fgn-backup.conf.example fgn-backup.crontab.example \
               fgn-backup.logrotate.example tar-exclude.example.root \
               tar-exclude.example.var
-SOURCES    := $(addsuffix .in,$(BIN) $(GCONFIGS) $(MODULES) $(EXAMPLES))
+SOURCES    := $(addsuffix .in,$(BIN) $(GCONFIGS) $(MANPAGE) $(MODULES) \
+              $(EXAMPLES))
 
 all:
 	@echo Targets:
@@ -41,13 +43,14 @@ all:
 	@echo "  clean      - remove generated files (except archives/packages)"
 	@echo "  real-clean - remove generated files including archives/packages"
 
-install: $(BIN) $(MODULES) $(GCONFIGS) $(DOCS) $(EXAMPLES)
+install: $(BIN) $(MANPAGE) $(MODULES) $(GCONFIGS) $(DOCS) $(EXAMPLES)
 	install -d -m 0755 -o root -g root \
 	    $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(MODDIR) \
 	    $(DESTDIR)$(MANDIR) $(DESTDIR)$(DOCDIR) $(DESTDIR)$(EXAMPLEDIR)
 	install -m 0755 -o root -g root $(BIN) $(DESTDIR)$(BINDIR)
 	install -m 0644 -o root -g root $(GCONFIGS) $(DESTDIR)$(LIBDIR)
 	install -m 0644 -o root -g root $(MODULES) $(DESTDIR)$(MODDIR)
+	install -m 0644 -o root -g root $(MANPAGE) $(DESTDIR)$(MANDIR)
 	install -m 0644 -o root -g root $(DOCS) $(DESTDIR)$(DOCDIR)
 	install -m 0644 -o root -g root $(EXAMPLES) $(DESTDIR)$(EXAMPLEDIR)
 
@@ -60,21 +63,22 @@ dist: clean $(SOURCES) $(DOCS) version
 	tar cvfj $$DNAME.tar.bz2 -C $$TDIR $$DNAME ; \
 	$(RM) -rf $$TDIR
 
-tgz: clean $(BIN) $(MODULES) $(GCONFIGS) $(DOCS) $(EXAMPLES) version
+tgz: clean $(BIN) $(MODULES) $(GCONFIGS) $(MANPAGE) $(DOCS) $(EXAMPLES) version
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
 	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR . ; \
 	$(RM) -rf $$BUILDDIR
 
 clean:
-	$(RM) version $(BIN) $(MODULES) $(GCONFIGS) $(EXAMPLES)
+	$(RM) version $(BIN) $(MANPAGE) $(MODULES) $(GCONFIGS) $(EXAMPLES)
 
 real-clean: clean
 	$(RM) *.tar.bz2 *.tgz
 
-$(BIN) $(MODULES) $(GCONFIGS) $(EXAMPLES): \
-           $(addsuffix .in,$(BIN) $(MODULES) $(EXAMPLES)) version
+$(BIN) $(MANPAGE) $(MODULES) $(GCONFIGS) $(EXAMPLES): \
+           $(addsuffix .in,$(BIN) $(MODULES) $(EXAMPLES) $(MANPAGE)) version
 	sed -e 's/@@VERSION@@/$(shell cat version)/g' \
+	    -e 's|@@DATE@@|$(shell date -I)|g' \
 	    -e 's|@@LIBDIR@@|$(LIBDIR)|g' \
 	    -e 's|@@MODDIR@@|$(MODDIR)|g' \
 	    -e 's|@@DOCDIR@@|$(DOCDIR)|g' \

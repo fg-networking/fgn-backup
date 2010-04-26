@@ -1,0 +1,100 @@
+.TH fgn\-backup 8 "@@DATE@@" @@VERSION@@ "system backup to FTP server"
+.SH NAME
+fgn\-backup \- system backup to FTP server
+.SH SYNOPSIS
+.B fgn\-backup [OPTIONS]
+.SH DESCRIPTION
+.B fgn\-backup
+performs a full system backup and uploads the archive to an FTP server.
+Prior to creating (tar) archives of the system, databases and directories
+can be dumped to create a consistent snapshot. Currently MySQL and OpenLDAP
+dumps are supported.
+.B fgn\-backup
+without any options will perform the configured backup steps (see
+.B FILES
+section).
+.SH OPTIONS
+.SS -h
+Write a help message to standard output and show (configured) default settings.
+.SS -V
+Write version information to standard output.
+.SS -c
+Check free space on FTP server, overriding config file settings.
+.SS -C
+Do not check free space on FTP server, overriding config file settings.
+.SS -f
+Upload archives to FTP server, overriding config file settings.
+.SS -F
+Do not upload archives to FTP server, overriding config file settings.
+.SS -i
+Perform log file initialization, overriding config file settings.
+.SS -I
+Do not perform log file initialization, overriding config file settings.
+.SS -m
+Dump all MySQL databases, overriding config file settings.
+.SS -M
+Do not dump MySQL databases, overriding config file settings.
+.SS -s
+Dump OpenLDAP directory, overriding config file settings.
+.SS -S
+Do not dump OpenLDAP directory, overriding config file settings.
+.SS -t
+Create tar archives, overriding config file settings.
+.SS -T
+Do not create tar archives, overriding config file settings.
+.SH EXIT STATUS
+.IP \(bu
+0 on successful execution.
+.IP \(bu
+1, if wrong command line arguments are give or
+.B fgn\-backup
+is already running.
+.SH FILES
+.B /etc/fgn\-backup.conf
+\- site specific configuration.
+.P
+.B @@LIBDIR@@/fgn-backup.global.conf
+\- general configuration.
+.P
+.B /etc/cron.d/fgn\-backup
+\- crontab to create backups.
+.P
+.B /etc/logrotate.d/fgn\-backup
+\- logrotate configuration to keep a set of older backup logs.
+.P
+.B /var/run/fgn\-backup/fgn\-backup.pid
+\- PID of running
+.B fgn\-backup
+instance.
+.SH DIRECTORIES
+.B /var/cache/fgn\-backup/
+\- for archives.
+.P
+.B /var/lib/fgn\-backup/
+\- to dump databases and directories.
+.P
+.B @@MODDIR@@/
+\-
+.B fgn\-backup
+modules.
+.P
+.B @@LOGDIR@@/
+\- logfiles.
+.SH BUGS
+.BR mysqldump (1)
+will return with exit code 0 on some errors, resulting in a backup without
+current MySQL dump.
+.SH AUTHOR
+.B fgn\-backup
+was written by Erik Auerswald <auerswal@unix-ag.uni-kl.de>, based on a
+backup script written by Jörg Mayer <jmayer@fg-networking.de>.
+.SH "SEE ALSO"
+.BR ftp (1),
+.BR lftp (1),
+.BR mysql (1),
+.BR mysqldump (1),
+.BR slapcat (8),
+.BR slapd (8),
+.BR tar (1),
+.BR @@DOCDIR@@ ,
+.BR @@EXAMPLEDIR@@ .
