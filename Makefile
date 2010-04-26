@@ -27,7 +27,7 @@ BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
               show-help modules openldap-dump
 GCONFIGS   := fgn-backup.global.conf
-DOCS       := AUTHORS COPYING
+DOCS       := AUTHORS COPYING INSTALL
 EXAMPLES   := fgn-backup.conf.example fgn-backup.crontab.example \
               fgn-backup.logrotate.example tar-exclude.example.root \
               tar-exclude.example.var

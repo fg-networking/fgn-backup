@@ -1,0 +1,30 @@
+Installation from Source Archive
+================================
+
+1. Download source tarball "fgn-backup-<VERSION>.tar.bz2".
+2. Unpack using "tar xfj fgn-backup-<VERSION>.tar.bz2".
+3. Change to directory "fgn-backup-<VERSION>".
+4. Install files using "sudo make install".
+   (You can change the install location from the default "/usr/local" bye
+    specifying a different prefix: "sudo make PREFIX=<WHERETO> install")
+5. Create a configuration file "/etc/fgn-backup". You can use the file
+   "/usr/local/share/doc/fgn-backup/examples/fgn-backup.conf.example"
+   as a starting point.
+6. Place tar-exclude files in the file system roots to exclude e.g. temporary
+   files/directories from the backup. There are two examples files, one for
+   the "root" filesystem, the other for the "/var" filesystem in the example
+   directory "/usr/local/doc/fgn-backup/examples". This assumes seperate
+   filesystems for "root", "/usr", "/var", and so on.
+7. Create a logrotate configuration file if you want to keep older backup
+   logs on the local machine for easy reference. You can use the file
+   "/usr/local/share/doc/fgn-backup/examples/fgn-backup.logrotate.example"
+   as a starting point.
+8. Create a file in /etc/cron.d to schedule backups. You can use the file
+   "/usr/local/share/doc/fgn-backup/examples/fgn-backup.crontab.example"
+   as a starting point.
+
+Installation from TGZ Package
+=============================
+1. Download TGZ package "fgn-backup-<VERSION>.tgz".
+2. Unpack it into the system root using "tar xfz fgn-backup-<VERSION>.tgz -C /".
+3.-6. The same as points 5.-8. above.
