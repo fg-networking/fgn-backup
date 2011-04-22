@@ -81,6 +81,11 @@ modules.
 .P
 .B @@LOGDIR@@/
 \- logfiles.
+.SH EXAMPLES
+.SS Check for free space on configured FTP server:
+fgn\-backup \-IMSTFc
+.SS Upload already created archive(s) to FTP server:
+fgn\-backup \-IMSTfC
 .SH BUGS
 .BR mysqldump (1)
 will return with exit code 0 on some errors, resulting in a backup without
