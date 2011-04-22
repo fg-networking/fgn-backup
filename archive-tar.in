@@ -1,6 +1,6 @@
 # fgn-backup module to create tar archives of partitions
 # version @@VERSION@@
-#   Copyright (C) 2007-2010 Erik Auerswald <auerswald@fg-networking.de>
+#   Copyright (C) 2007-2011 Erik Auerswald <auerswald@fg-networking.de>
 #   Copyright (C) 2006-2008 Jörg Mayer <jmayer@fg-networking.de>
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -46,6 +46,7 @@ tar_partitions()
         tar $TARFLAGS $fullpartfile .
         date
     done
+    ( cd ${BACKUPCACHEDIR} ; cksum *.tar.gz > CHECKSUMS )
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:
