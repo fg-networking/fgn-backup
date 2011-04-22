@@ -5,10 +5,11 @@ fgn\-backup \- system backup to FTP server
 .B fgn\-backup [OPTIONS]
 .SH DESCRIPTION
 .B fgn\-backup
-performs a full system backup and uploads the archive to an FTP server.
+performs a full system backup and uploads the archive(s) to an FTP server.
 Prior to creating (tar) archives of the system, databases and directories
 can be dumped to create a consistent snapshot. Currently MySQL and OpenLDAP
 dumps are supported.
+Invoking
 .B fgn\-backup
 without any options will perform the configured backup steps (see
 .B FILES
@@ -46,7 +47,7 @@ Do not create tar archives, overriding config file settings.
 .IP \(bu
 0 on successful execution.
 .IP \(bu
-1, if wrong command line arguments are give or
+1, if wrong command line arguments are given or
 .B fgn\-backup
 is already running.
 .SH FILES
