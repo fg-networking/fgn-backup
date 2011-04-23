@@ -66,7 +66,7 @@ dist: clean $(SOURCES) $(DOCS) version
 tgz: clean $(BIN) $(MODULES) $(GCONFIGS) $(MANPAGE) $(DOCS) $(EXAMPLES) version
 	BUILDDIR=$(shell mktemp -d) ; \
 	fakeroot $(MAKE) DESTDIR=$$BUILDDIR install ; \
-	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR . ; \
+	fakeroot tar cfz $(PKGNAME)-$(shell cat version).tgz -C $$BUILDDIR usr ; \
 	$(RM) -rf $$BUILDDIR
 
 clean:
