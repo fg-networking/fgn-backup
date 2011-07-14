@@ -65,7 +65,7 @@ init_logfiles()
     log_echo "#~Datum:~$DATE~~Zeit:~$TIME~~ #"
     log_echo "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #"
     log_echo "#---------------Backuplog-------------#"
-    log_echo "#____________________________________ #"
+    log_echo "#____fgn-backup version @@VERSION@@_____ #"
     log_echo "#######################################"
 
     p_log_echo "========= fdisk -l ========="
