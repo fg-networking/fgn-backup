@@ -89,4 +89,4 @@ $(BIN) $(MANPAGE) $(MODULES) $(GCONFIGS) $(EXAMPLES): \
 version:
 	printf "git%05d" $(shell git log --pretty=oneline --no-merges|wc -l) >$@
 
-.PHONY: all install dist clean real-clean
+.PHONY: all install dist clean real-clean version
