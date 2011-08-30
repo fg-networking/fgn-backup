@@ -65,6 +65,8 @@ test $DO_MYSQL -eq 1 && dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
 test $DO_OPENLDAP -eq 1 && dump_openldap 2>&1 | tee -a "${BACKUPLOG}"
 # create archives
 test $DO_TAR -eq 1 && tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
+# check free space on server (so we have an immediate idea why an upload failed)
+test $DO_CHECK_FTP -eq 1 && check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
 # upload to server
 test $DO_FTP -eq 1 && ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
 # check free space on server
