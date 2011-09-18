@@ -23,8 +23,8 @@ PROGNAME=fgn-backup
 show_version()
 {
     echo "$PROGNAME $VERSION"
-    echo "Copyright (C) 2007-2010 Erik Auerswald <auerswald@fg-networking.de>"
-    echo "Copyright (C) 2006-2008 Jörg Mayer <jmayer@fg-networking.de>"
+    echo "Copyright (C) 2007-2011 Erik Auerswald <auerswald@fg-networking.de>"
+    echo "Copyright (C) 2006-2008, 2011 Jörg Mayer <jmayer@fg-networking.de>"
     echo "Licensed under GPLv3+"
 }
 
