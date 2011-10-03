@@ -27,20 +27,17 @@ ftp_upload()
     printf "Starting FTP transfer: "
     date
 
-    if  ftp -inv <<-BACKUPENDE
-	open ${FTP_SERVER}
-	user ${FTP_USER} ${FTP_PASS}
-	bin
-	mkdir ${FTPDIR}
-	cd ${FTPDIR}
-	pwd
-	mput *
-	BACKUPENDE
-    then
-            printf "Finished FTP transfer: "
-    else
-            printf "Failed FTP transfer: "
-    fi
+    ftp -inv <<-BACKUPENDE
+        open ${FTP_SERVER}
+        user ${FTP_USER} ${FTP_PASS}
+        bin
+        mkdir ${FTPDIR}
+        cd ${FTPDIR}
+        pwd
+        mput *
+        BACKUPENDE
+    test 0 -ne $? && printf '\n*** ftp process returned an error ***\n\n'
+    printf "Finished FTP transfer: "
     date
 }
 
