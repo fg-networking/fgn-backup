@@ -34,14 +34,14 @@ ftp_upload()
     date
 
     ftp -inv <<-BACKUPENDE | tee -- "$ftplog"
-        open ${FTP_SERVER}
-        user ${FTP_USER} ${FTP_PASS}
-        bin
-        mkdir ${FTPDIR}
-        cd ${FTPDIR}
-        pwd
-        mput *
-        BACKUPENDE
+	open ${FTP_SERVER}
+	user ${FTP_USER} ${FTP_PASS}
+	bin
+	mkdir ${FTPDIR}
+	cd ${FTPDIR}
+	pwd
+	mput *
+	BACKUPENDE
     test 0 -ne $? && printf '\n*** ftp process returned an error ***\n\n'
     printf "Finished FTP transfer: "
     date
