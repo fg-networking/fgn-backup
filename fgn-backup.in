@@ -1,7 +1,7 @@
 #!/bin/sh
 # version @@VERSION@@
 #   Copyright (C) 2007-2011 Erik Auerswald <auerswald@fg-networking.de>
-#   Copyright (C) 2006-2008, 2011 Jörg Mayer <jmayer@fg-networking.de>
+#   Copyright (C) 2006-2008,2011 Jörg Mayer <jmayer@fg-networking.de>
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
