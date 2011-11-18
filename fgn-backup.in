@@ -26,6 +26,12 @@ set -u
 # include function-modules
 . ${MODULEPATH}/modules
 
+# show help and exit if run in interactive session w/o specifying any options
+test $# -eq 0 -a \( -t 0 -o -t 1 \) &&
+    { usage; \
+      echo "Notice: Started in interactive session without any options, doing nothing."; \
+      exit 1; }
+
 # parse commandline
 while getopts "VhiImMSstTfFcC" option; do
     case $option in

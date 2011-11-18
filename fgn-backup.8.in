@@ -11,9 +11,15 @@ can be dumped to create a consistent snapshot. Currently MySQL and OpenLDAP
 dumps are supported.
 Invoking
 .B fgn\-backup
-without any options will perform the configured backup steps (see
+without any options non-interactively (e.g. via
+.BR cron (8))
+will perform the configured backup steps (see
 .B FILES
 section).
+If
+.B fgn\-backup
+is invoked without options in an interactive session, it will print a help
+message and exit.
 .SH OPTIONS
 .SS -h
 Write a help message to standard output and show (configured) default settings.
@@ -95,6 +101,7 @@ current MySQL dump.
 was written by Erik Auerswald <auerswal@unix-ag.uni-kl.de>, based on a
 backup script written by Jörg Mayer <jmayer@fg-networking.de>.
 .SH "SEE ALSO"
+.BR cron (8),
 .BR ftp (1),
 .BR lftp (1),
 .BR mysql (1),
