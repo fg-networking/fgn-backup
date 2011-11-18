@@ -104,6 +104,7 @@ backup script written by Jörg Mayer <jmayer@fg-networking.de>.
 .BR cron (8),
 .BR ftp (1),
 .BR lftp (1),
+.BR logrotate (8),
 .BR mysql (1),
 .BR mysqldump (1),
 .BR slapcat (8),
