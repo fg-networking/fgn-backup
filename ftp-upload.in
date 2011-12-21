@@ -45,7 +45,7 @@ ftp_upload()
     test 0 -ne $? && printf '\n*** ftp process returned an error ***\n\n'
     printf "Finished FTP transfer: "
     date
-    grep -qE -- '^[45][0-9]{2} ' "$ftplog" &&
+    grep -qE -- '^([45][0-9]{2} )|(netout:)' "$ftplog" &&
         printf '\n*** there were errors during the FTP session ***\n\n'
 }
 
