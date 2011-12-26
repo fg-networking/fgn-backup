@@ -25,6 +25,10 @@ check_free_ftp_space()
     local USED_FTP_SPACE=$(printf "du -sm .\n" | \
                            lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | \
                            cut -f1)
+    test -n "$USED_FTP_SPACE" || {\
+        echo "ERROR: could not determine space used on FTP server" ; return 1 ;\
+    }
+
     local NEEDED_FTP_SPACE=$(du -sm $BACKUPCACHEDIR | cut -f1)
     local FREE_FTP_SPACE=$(($TOTAL_FTP_SPACE - $USED_FTP_SPACE))
 
