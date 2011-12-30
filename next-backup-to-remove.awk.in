@@ -1,0 +1,146 @@
+#! /usr/bin/awk -f
+
+# fgn-backup helper script to determine next backup to remove from FTP server
+# version @@VERSION@@
+#   Copyright (C) 2011 Erik Auerswald <auerswald@fg-networking.de>
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# should work with POSIX awk, tested with gawk (GNU Awk) and mawk (Mike's AWK)
+
+# use `-v VARIABLE=VALUE' on the command line to set variables for the script
+# supported settings:
+#    strat_week={weekly|biweekly}
+#    strat_year={keep,omit}
+#    backups=N
+#    verbose=1
+#    debug=1
+
+# Backup strategy needs to be adjusted to backup size and available space
+# on FTP server. The default strategy (keeping 3 yearly, monthly, and weekly
+# backups) keeps 9 older backups and as many daily backups as possible, thus
+# needs at least an FTP server capacity of 12 backups (-> 3 daily backups).
+# To adjust to bigger backup sizes, reduce the number of old backups kept
+# (2 backups -> 6 old ones -> total of 8 backups capacity needed at least).
+# the current manual strategy creates room for 2 or 3 backups at a time,
+# each Monday, Wednsday, and Friday). Thus the capacity needed to implement
+# the above strategies is increased by 3 backups.
+#
+# Strategy variable settings for manual deletion:
+# old server: use defaults (-vstrat_week=weekly -vstrat_year=keep -vbackups=3)
+# current server: -vstrat_week=biweekly -vstrat_year=omit -vbackups=2)
+
+BEGIN {
+    # backup strategy:
+    # - keep weekly (default) or bi-weekly backups
+    # - keep yearly backups (default) or omit them
+    if (strat_week == "") { strat_week = "weekly" }
+    if (strat_year == "") { strat_year = "keep" }
+    # number of backups to keep
+    if (backups == "") { backups = 3 }
+    if (verbose) {
+        printf("backup strategy: keeping %d backups each", backups)
+        printf(", keep %s, %s yearly\n", strat_week, strat_year)
+    }
+}
+
+# divide backups in yearly, monthly, (bi-)weekly, and daily
+# operate on the output of `ftp ls' or `lftp du' commands
+# the last field contains the directory name
+# fgn-backup uses dates as names, patterned YYYYMMDD per default
+$NF ~ /[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/ {
+    # strip leading ./ for compatibility with `lftp du' output
+    sub(/^\.\//,"",$NF)
+
+    # parse year, month and day from directory name
+    year = substr($NF, 1, 4)
+    month = substr($NF,5,2)
+    day = substr($NF,7,2)
+    # determine week of year using date
+    ("date +%V -d" $NF) | getline week
+    if (strat_week == "biweekly") { week = int(week / 2) }
+
+    # categorize backups
+    if ((strat_year=="keep") && ((yearly[year] == 0) || (yearly[year] > $NF))) {
+        yearly[year] = $NF
+    } else if ((monthly[month] == 0) || (monthly[month] > $NF)) {
+        monthly[month] = $NF
+    } else if ((weekly[week] == 0) ||(weekly[week] > $NF)) {
+        weekly[week] = $NF
+    } else {
+        daily[day] = $NF
+    }
+}
+
+# print backup to delete next
+END {
+    if (debug) {
+        if (strat_year=="keep") {
+            print "yearly backups:"
+            for (y in yearly) { print "  " y ": " yearly[y] }
+        }
+        print "monthly backups:"
+        for (m in monthly) { print "  " m ": " monthly[m] }
+        print ((strat_week == "biweekly") ? "bi-" : "") "weekly backups:"
+        for (w in weekly) { print "  " w ": " weekly[w] }
+        print "daily backups:"
+        for (d in daily) { print "  " d ": " daily[d] }
+    }
+    # determine next backup to delete
+    # 1) find oldest daily backup
+    for (i in daily) {
+        if ((oldday == 0) || (daily[i] < oldday)) {
+            oldday = daily[i]
+        }
+    }
+    if (!oldday) { print "ERROR: not enough backups for strategy"; exit 1}
+    if (verbose) { printf "suggest deleting backup " }
+    # check yearly backups iff they exist
+    if (strat_year=="keep") {
+        # 2) check if more than N older yearly backups exist
+        ctr = 0
+        for (i in yearly) {
+            if (yearly[i] < oldday) { ctr++ }
+            if ((oldyear == 0) || (yearly[i] < oldyear)) {
+                oldyear = yearly[i]
+            }
+        }
+        # 3) if yes, print the oldest yearly backup and exit
+        if (ctr > backups) { print oldyear; exit }
+    }
+    # 4) check if more than N older monthly backups exist
+    ctr = 0
+    for (i in monthly) {
+        if (monthly[i] < oldday) { ctr++ }
+        if ((oldmon == 0) || (monthly[i] < oldmon)) {
+            oldmon = monthly[i]
+        }
+    }
+    # 5) if yes, print the oldest monthly backup and exit
+    if (ctr > backups) { print oldmon; exit }
+    # 6) check if more than N older (bi-)weekly backups exist
+    ctr = 0
+    for (i in weekly) {
+        if (weekly[i] < oldday) { ctr++ }
+        if ((oldweek == 0) || (weekly[i] < oldweek)) {
+            oldweek = weekly[i]
+        }
+    }
+    # 7) if yes, print the oldest (bi-)weekly backup and exit
+    if (ctr > backups) { print oldweek; exit }
+    # 8) print the daily backup found in step 1) and exit
+    print oldday
+}
+
+# vim:filetype=awk:shiftwidth=4:expandtab:
