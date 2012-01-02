@@ -58,7 +58,7 @@ test $# -eq 0 || \
     { echo "Error: non-option command line argument(s) given"; usage; exit 1; }
 
 # assure that there is only one instance of fgn-backup running
-mkdir -p "$BACKUPRUNDIR"
+mkdir -p -- "$BACKUPRUNDIR"
 test -e "${BACKUPRUNDIR}/fgn-backup.pid" && \
   { printf -- 'fgn-backup already running (PID %s), exiting\n' \
     $(cat "${BACKUPRUNDIR}/fgn-backup.pid"); exit 1; }
@@ -67,18 +67,18 @@ echo $$ > "${BACKUPRUNDIR}/fgn-backup.pid"
 # create backup logs
 test "$DO_INIT_LOGS" -eq 1 && init_logfiles
 # dump databases
-test "$DO_MYSQL" -eq 1 && dump_mysql_dbs 2>&1 | tee -a "${BACKUPLOG}"
-test "$DO_OPENLDAP" -eq 1 && dump_openldap 2>&1 | tee -a "${BACKUPLOG}"
+test "$DO_MYSQL" -eq 1 && dump_mysql_dbs 2>&1 | tee -a -- "${BACKUPLOG}"
+test "$DO_OPENLDAP" -eq 1 && dump_openldap 2>&1 | tee -a -- "${BACKUPLOG}"
 # create archives
-test "$DO_TAR" -eq 1 && tar_partitions 2>&1 | tee -a "${BACKUPLOG}"
+test "$DO_TAR" -eq 1 && tar_partitions 2>&1 | tee -a -- "${BACKUPLOG}"
 # check free space on server (so we have an immediate idea why an upload failed)
-test "$DO_FTP" -eq 1 && check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
+test "$DO_FTP" -eq 1 && check_free_ftp_space 2>&1 | tee -a -- "${BACKUPLOG}"
 # upload to server
-test "$DO_FTP" -eq 1 && ftp_upload 2>&1 | tee -a "${BACKUPLOG}"
+test "$DO_FTP" -eq 1 && ftp_upload 2>&1 | tee -a -- "${BACKUPLOG}"
 # check free space on server
-test "$DO_CHECK_FTP" -eq 1 && check_free_ftp_space 2>&1 | tee -a "${BACKUPLOG}"
+test "$DO_CHECK_FTP" -eq 1 && check_free_ftp_space 2>&1 | tee -a -- "${BACKUPLOG}"
 
-rm -f "${BACKUPRUNDIR}/fgn-backup.pid"
+rm -f -- "${BACKUPRUNDIR}/fgn-backup.pid"
 exit 0
 
 # vim:filetype=sh:shiftwidth=4:expandtab:

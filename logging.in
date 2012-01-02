@@ -27,13 +27,13 @@ RPMPACKAGES=${RPMPACKAGES:="${BACKUPLOGDIR}/rpm-all-packages.log"}
 # echo to stdout and logfile
 log_echo()
 {
-    echo "$@" | tee -a "${BACKUPLOG}"
+    echo "$@" | tee -a -- "${BACKUPLOG}"
 }
 
 # echo to stdout and partitionlogfile
 p_log_echo()
 {
-    echo "$@" | tee -a "${PARTITIONLOG}"
+    echo "$@" | tee -a -- "${PARTITIONLOG}"
 }
 
 # printf for header lines to stdout and logfile
@@ -42,20 +42,20 @@ p_log_echo()
 #  - every tilde is replaced with a space
 log_header_printf()
 {
-    printf -- "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
+    printf -- "$@" | tr ' ~' '~ ' | tee -a -- "${BACKUPLOG}"
 }
 
 init_logfiles()
 {
 # create log directory if needed
-    mkdir -pv "$BACKUPLOGDIR"
+    mkdir -pv -- "$BACKUPLOGDIR"
 
 # truncate log files
     : > "$BACKUPLOG"
     : > "$PARTITIONLOG"
 
 # remove lists of selected packages
-    rm -f "$DPKGSELECTION" "$RPMPACKAGES"
+    rm -f -- "$DPKGSELECTION" "$RPMPACKAGES"
 
 # create backup logfiles
     log_echo "#######################################"
@@ -69,11 +69,11 @@ init_logfiles()
     log_echo "#######################################"
 
     p_log_echo "========= fdisk -l ========="
-    fdisk -l 2>&1 | tee -a "${PARTITIONLOG}"
+    fdisk -l 2>&1 | tee -a -- "${PARTITIONLOG}"
     p_log_echo "========= df ==============="
-    df 2>&1 | tee -a "${PARTITIONLOG}"
+    df 2>&1 | tee -a -- "${PARTITIONLOG}"
     p_log_echo "========= fstab ==============="
-    cat /etc/fstab 2>&1 | tee -a "${PARTITIONLOG}"
+    cat /etc/fstab 2>&1 | tee -a -- "${PARTITIONLOG}"
 
     which dpkg > /dev/null 2>&1 && \
         dpkg --get-selections "*" > ${DPKGSELECTION} 2>&1
@@ -81,7 +81,7 @@ init_logfiles()
     which rpm > /dev/null 2>&1 && \
         rpm --query --all > ${RPMPACKAGES} 2>&1
 
-    date | tee -a "${BACKUPLOG}"
+    date | tee -a -- "${BACKUPLOG}"
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:

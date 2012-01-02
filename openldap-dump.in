@@ -23,8 +23,8 @@ dump_openldap()
     test -x $(which slapcat) || \
         { echo "ERROR: could not find slapcat " ; return 1 ; }
 
-    rm -f "$DBDUMPDIR/$OPENLDAPDUMP.gz"
-    mkdir -pv "$DBDUMPDIR"
+    rm -f -- "$DBDUMPDIR/$OPENLDAPDUMP.gz"
+    mkdir -pv -- "$DBDUMPDIR"
     slapcat | gzip -c > "$DBDUMPDIR/$OPENLDAPDUMP.gz"
 }
 

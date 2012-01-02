@@ -21,8 +21,8 @@ DO_TAR=${DO_TAR:=1}
 
 tar_partitions()
 {
-    rm -rf "${BACKUPCACHEDIR}"/*.tar.gz
-    mkdir -pv "${BACKUPCACHEDIR}"
+    rm -rf -- "${BACKUPCACHEDIR}"/*.tar.gz
+    mkdir -pv -- "${BACKUPCACHEDIR}"
     for partition in $BACKUPLIST; do
 
         printf -- '\nPartition %s:\n\n' "$partition"
@@ -34,7 +34,7 @@ tar_partitions()
             continue
         fi
 
-        cd "$partition"
+        cd -- "$partition"
         if [ ! -f tar-exclude ]; then
             touch tar-exclude
         fi
@@ -46,7 +46,7 @@ tar_partitions()
         tar $TARFLAGS "$fullpartfile" .
         date
     done
-    ( cd "${BACKUPCACHEDIR}" ; cksum *.tar.gz > CHECKSUMS )
+    ( cd -- "${BACKUPCACHEDIR}" ; cksum -- *.tar.gz > CHECKSUMS )
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:

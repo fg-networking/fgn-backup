@@ -29,7 +29,7 @@ ftp_upload()
     test -n "$ftplog" && test -r "$ftplog" ||
         echo "ERROR: could not create temporary ftp log file"
 
-    cd "${BACKUPCACHEDIR}"
+    cd -- "${BACKUPCACHEDIR}"
     printf -- 'Starting FTP transfer: '
     date
 
