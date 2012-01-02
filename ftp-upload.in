@@ -21,7 +21,7 @@ DO_FTP=${DO_FTP:=0}
 
 ftp_upload()
 {
-    test -x $(which ftp) || { echo "ERROR: could not find ftp" ; return 1 ; }
+    test -x "$(which ftp)" || { echo "ERROR: could not find ftp" ; return 1 ; }
 
     local ftplog=$(mktemp /tmp/ftplog.$$.XXXXXXXXXX)
     trap "rm -f $ftplog" 0 1 5 15
@@ -29,7 +29,7 @@ ftp_upload()
     test -n "$ftplog" && test -r "$ftplog" ||
         echo "ERROR: could not create temporary ftp log file"
 
-    cd ${BACKUPCACHEDIR}
+    cd "${BACKUPCACHEDIR}"
     printf -- 'Starting FTP transfer: '
     date
 

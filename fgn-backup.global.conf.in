@@ -32,7 +32,7 @@ OPENLDAPDUMP="openldapdump.ldif"
 DATE=$(date +%F)
 TIME=$(date +%T)
 # use date only (no time information) for directory name on ftp server
-TIMESTAMP=$(echo $DATE | tr -d '-')
+TIMESTAMP=$(echo "$DATE" | tr -d '-')
 FTPDIR=${TIMESTAMP}
 # host name used in log header
 HOST=$(hostname -f)

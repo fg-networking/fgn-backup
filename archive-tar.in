@@ -21,32 +21,32 @@ DO_TAR=${DO_TAR:=1}
 
 tar_partitions()
 {
-    rm -rf ${BACKUPCACHEDIR}/*.tar.gz
-    mkdir -pv ${BACKUPCACHEDIR}
+    rm -rf "${BACKUPCACHEDIR}"/*.tar.gz
+    mkdir -pv "${BACKUPCACHEDIR}"
     for partition in $BACKUPLIST; do
 
         printf -- '\nPartition %s:\n\n' "$partition"
 
-        if [ ! -d $partition ]; then
+        if [ ! -d "$partition" ]; then
             printf -- '\n  WARNING: Backuplist not up to date - target: %s\n' "$partition"
             printf -- '           does not exist or is no directory:\n'
             printf -- '           %s\n' "$(ls -ld "$partition")"
             continue
         fi
 
-        cd $partition
+        cd "$partition"
         if [ ! -f tar-exclude ]; then
             touch tar-exclude
         fi
 
         partfile=$(printf -- 'bak%s.tar.gz' "$partition" | tr '/' '_')
-        fullpartfile=${BACKUPCACHEDIR}/${partfile}
+        fullpartfile="${BACKUPCACHEDIR}/${partfile}"
 
         printf -- 'TAR: %s ' "$fullpartfile"
-        tar $TARFLAGS $fullpartfile .
+        tar $TARFLAGS "$fullpartfile" .
         date
     done
-    ( cd ${BACKUPCACHEDIR} ; cksum *.tar.gz > CHECKSUMS )
+    ( cd "${BACKUPCACHEDIR}" ; cksum *.tar.gz > CHECKSUMS )
 }
 
 # vim:filetype=sh:shiftwidth=4:expandtab:

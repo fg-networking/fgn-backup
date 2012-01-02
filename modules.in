@@ -21,7 +21,7 @@ FEATURES="mysql-dump archive-tar check-free-ftp-space ftp-upload openldap-dump"
 
 # include function-modules
 for MODULE in $INFRASTRUCTURE $FEATURES; do
-    . ${MODULEPATH}/${MODULE}
+    . "${MODULEPATH}/${MODULE}"
 done
 
 # vim:filetype=sh:shiftwidth=4:expandtab:
