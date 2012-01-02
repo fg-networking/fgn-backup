@@ -1,6 +1,6 @@
 # fgn-backup module providing functions for online help
 # version @@VERSION@@
-#   Copyright (C) 2009-2010 Erik Auerswald <auerswald@fg-networking.de>
+#   Copyright (C) 2009-2010,2012 Erik Auerswald <auerswald@fg-networking.de>
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
