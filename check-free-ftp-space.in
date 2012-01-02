@@ -38,11 +38,13 @@ check_free_ftp_space()
     echo "Current size of backup   (in MB): $NEEDED_FTP_SPACE"
     echo "Maximum backups on FTP server   : $MAX_BACKUPS"
 
+    local CAPACITY=$(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))
     if [ "$NEEDED_FTP_SPACE" -ge "$FREE_FTP_SPACE" ]; then
-        printf "\nWARNING: not enough space left on FTP server for next backup\n"
+        printf -- '\nWARNING: not enough space left on FTP server for next backup\n'
     else
-        echo "There is space for $(($FREE_FTP_SPACE / $NEEDED_FTP_SPACE))" \
-             "backup(s) left."
+        printf -- 'There is space for %s backup' "$CAPACITY"
+        test "$CAPACITY" -ne 1 && printf -- 's'
+        printf -- ' left.\n'
     fi
 }
 
