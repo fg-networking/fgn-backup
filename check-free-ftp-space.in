@@ -29,7 +29,7 @@ check_free_ftp_space()
         echo "ERROR: could not determine space used on FTP server" ; return 1 ;\
     }
 
-    local NEEDED_FTP_SPACE=$(du -sm -- $BACKUPCACHEDIR | cut -f1)
+    local NEEDED_FTP_SPACE=$(du -sm -- "$BACKUPCACHEDIR" | cut -f1)
     local FREE_FTP_SPACE=$(($TOTAL_FTP_SPACE - $USED_FTP_SPACE))
     local MAX_BACKUPS=$(($TOTAL_FTP_SPACE / $NEEDED_FTP_SPACE))
 
