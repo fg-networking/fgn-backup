@@ -42,7 +42,7 @@ p_log_echo()
 #  - every tilde is replaced with a space
 log_header_printf()
 {
-    printf "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
+    printf -- "$@" | tr ' ~' '~ ' | tee -a "${BACKUPLOG}"
 }
 
 init_logfiles()

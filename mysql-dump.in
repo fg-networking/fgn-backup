@@ -36,7 +36,7 @@ dump_selected_mysql_db()
     test "x$1" = "xinformation_schema" &&
         dump_option="${MYSQLDUMPNOLOCK} ${dump_option}"
 
-    printf "DB: $1 "
+    printf -- 'DB: %s ' "$1"
     while test $tries -lt $MAX_DB_DUMP_TRIES && \
           ! mysqldump $MYSQLDEFAULTS $MYSQLDUMPFLAGS $dump_option | \
                  gzip -c > "${DBDUMPDIR}/${MYSQLPREFIX}_${dump_name}.gz"; do

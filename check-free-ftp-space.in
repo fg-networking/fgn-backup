@@ -22,7 +22,7 @@ check_free_ftp_space()
 {
     test -x $(which lftp) || { echo "ERROR: could not find lftp" ; return 1 ; }
 
-    local USED_FTP_SPACE=$(printf "du -sm .\n" | \
+    local USED_FTP_SPACE=$(printf -- 'du -sm .\n' | \
                            lftp -u "${FTP_USER},${FTP_PASS}" "$FTP_SERVER" | \
                            cut -f1)
     test -n "$USED_FTP_SPACE" || {\

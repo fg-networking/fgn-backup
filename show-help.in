@@ -31,14 +31,14 @@ show_version()
 prdef()
 {
     test $# -eq 1 || return 1
-    test $1 -eq 1 && printf "(default)"
+    test $1 -eq 1 && printf -- '(default)'
     return 0
 }
 
 prndef()
 {
     test $# -eq 1 || return 1
-    test $1 -eq 0 && printf "(default)"
+    test $1 -eq 0 && printf -- '(default)'
     return 0
 }
 

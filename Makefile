@@ -92,6 +92,6 @@ $(BIN) $(MANPAGE) $(MODULES) $(GCONFIGS) $(EXAMPLES) $(HELPERS): \
 	    -e 's|@@LOGDIR@@|$(LOGDIR)|g' <$(addsuffix .in,$@) >$@
 
 version:
-	printf "git%05d" $(shell git log --pretty=oneline --no-merges|wc -l) >$@
+	printf -- 'git%05d' $(shell git log --pretty=oneline --no-merges|wc -l) >$@
 
 .PHONY: all install dist clean real-clean version

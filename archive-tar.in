@@ -25,12 +25,12 @@ tar_partitions()
     mkdir -pv ${BACKUPCACHEDIR}
     for partition in $BACKUPLIST; do
 
-        printf "\nPartition $partition:\n\n"
+        printf -- '\nPartition %s:\n\n' "$partition"
 
         if [ ! -d $partition ]; then
-            printf "\n  WARNING: Backuplist not up to date - target: $partition\n"
-            printf "           doesn't exist or isn't a directory:\n"
-            printf "           $(ls -ld $partition)\n"
+            printf -- '\n  WARNING: Backuplist not up to date - target: %s\n' "$partition"
+            printf -- '           does not exist or is no directory:\n'
+            printf -- '           %s\n' "$(ls -ld "$partition")"
             continue
         fi
 
@@ -39,10 +39,10 @@ tar_partitions()
             touch tar-exclude
         fi
 
-        partfile=$(printf "bak${partition}.tar.gz" | tr '/' '_')
+        partfile=$(printf -- 'bak%s.tar.gz' "$partition" | tr '/' '_')
         fullpartfile=${BACKUPCACHEDIR}/${partfile}
 
-        printf "TAR: $fullpartfile "
+        printf -- 'TAR: %s ' "$fullpartfile"
         tar $TARFLAGS $fullpartfile .
         date
     done
