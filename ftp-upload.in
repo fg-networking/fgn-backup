@@ -24,7 +24,7 @@ ftp_upload()
     test -x "$(which ftp)" || { echo "ERROR: could not find ftp" ; return 1 ; }
 
     local ftplog=$(mktemp /tmp/ftplog.$$.XXXXXXXXXX)
-    trap "rm -f $ftplog" 0 1 5 15
+    trap "rm -f $ftplog" 0 1 2 3 5 15
     # failure to create a temporary ftp log file is not fatal
     test -n "$ftplog" && test -r "$ftplog" ||
         echo "ERROR: could not create temporary ftp log file"
