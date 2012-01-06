@@ -76,7 +76,7 @@ $NF ~ /[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/ {
         yearly[year] = $NF
     } else if ((monthly[month] == 0) || (monthly[month] > $NF)) {
         monthly[month] = $NF
-    } else if ((weekly[week] == 0) ||(weekly[week] > $NF)) {
+    } else if ((weekly[week] == 0) || (weekly[week] > $NF)) {
         weekly[week] = $NF
     } else {
         daily[day] = $NF
