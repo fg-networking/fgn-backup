@@ -55,6 +55,13 @@ BEGIN {
     }
 }
 
+# determine week of year using strftime() and mktime() (GAWK extensions)
+function get_week(d)
+{
+    t = mktime(substr(d,1,4) " " substr(d,5,2) " " substr(d,7,2) " 12 00 00")
+    return strftime("%V", t)
+}
+
 # divide backups in yearly, monthly, (bi-)weekly, and daily
 # operate on the output of `ftp ls' or `lftp du' commands
 # the last field contains the directory name
@@ -67,8 +74,7 @@ $NF ~ /[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/ {
     year = substr($NF, 1, 4)
     month = substr($NF,5,2)
     day = substr($NF,7,2)
-    # determine week of year using strftime() and mktime() (GAWK extensions)
-    week = strftime("%V", mktime(year " " month " " day " 12 00 00"))
+    week = get_week($NF)
     if (strat_week == "biweekly") { week = int(week / 2) }
 
     # categorize backups
@@ -77,7 +83,14 @@ $NF ~ /[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/ {
     } else if ((monthly[month] == 0) || (monthly[month] > $NF)) {
         monthly[month] = $NF
     } else if ((weekly[week] == 0) || (weekly[week] > $NF)) {
-        weekly[week] = $NF
+        # last week of "old" year and first week of "new" year are adjacent
+        if ((strat_week == "biweekly") && !week && weekly[26] &&
+            (get_week(weekly[26]) == get_week(substr(weekly[26],1,4) "1231"))) {
+            delete weekly[week]
+            daily[day] = $NF
+        } else {
+            weekly[week] = $NF
+        }
     } else {
         daily[day] = $NF
     }
