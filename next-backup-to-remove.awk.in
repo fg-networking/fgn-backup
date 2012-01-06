@@ -1,4 +1,4 @@
-#! /usr/bin/awk -f
+#! /usr/bin/gawk -f
 
 # fgn-backup helper script to determine next backup to remove from FTP server
 # version @@VERSION@@
@@ -17,7 +17,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# should work with POSIX awk, tested with gawk (GNU Awk) and mawk (Mike's AWK)
+# uses GNU extensions and requires GNU Awk (gawk)
 
 # use `-v VARIABLE=VALUE' on the command line to set variables for the script
 # supported settings:
@@ -67,8 +67,8 @@ $NF ~ /[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/ {
     year = substr($NF, 1, 4)
     month = substr($NF,5,2)
     day = substr($NF,7,2)
-    # determine week of year using date
-    ("date +%V -d" $NF) | getline week
+    # determine week of year using strftime() and mktime() (GAWK extensions)
+    week = strftime("%V", mktime(year " " month " " day " 12 00 00"))
     if (strat_week == "biweekly") { week = int(week / 2) }
 
     # categorize backups
