@@ -26,7 +26,7 @@ LOGDIR     := /var/log/$(PKGNAME)
 BIN        := fgn-backup
 MODULES    := archive-tar logging mysql-dump check-free-ftp-space ftp-upload \
               show-help modules openldap-dump
-HELPERS    := next-backup-to-remove.awk
+HELPERS    := next-backup-to-remove.gawk
 GCONFIGS   := fgn-backup.global.conf
 DOCS       := AUTHORS COPYING INSTALL
 MANPAGE    := $(PKGNAME).8
