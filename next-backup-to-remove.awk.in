@@ -2,7 +2,7 @@
 
 # fgn-backup helper script to determine next backup to remove from FTP server
 # version @@VERSION@@
-#   Copyright (C) 2011 Erik Auerswald <auerswald@fg-networking.de>
+#   Copyright (C) 2011-2012 Erik Auerswald <auerswald@fg-networking.de>
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
