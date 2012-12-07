@@ -98,7 +98,7 @@ will return with exit code 0 on some errors, resulting in a backup without
 current MySQL dump.
 .SH AUTHOR
 .B fgn\-backup
-was written by Erik Auerswald <auerswal@unix-ag.uni-kl.de>, based on a
+was written by Erik Auerswald <auerswald@fg-networking.de>, based on a
 backup script written by Jörg Mayer <jmayer@fg-networking.de>.
 .SH "SEE ALSO"
 .BR cron (8),
