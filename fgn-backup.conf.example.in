@@ -1,6 +1,7 @@
 # configuration file for fgn-backup (version @@VERSION@@)
 
 # site-specific configuration: adjust this to match your needs
+# see @@LIBDIR@@/fgn-backup.global.conf for defaults
 BACKUPLIST="/ /home /usr /var"
 FTP_SERVER="ftp.example.com"
 FTP_USER="ftpuser"
