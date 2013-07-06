@@ -24,6 +24,9 @@ TARFLAGS=" --create --one-file-system --gzip --exclude=NOBACKUP --exclude-from=.
 MAX_DB_DUMP_TRIES=10
 MYSQLDEFAULTS=" --defaults-file=/etc/mysql/debian.cnf "
 MYSQLDUMPFLAGS=" --opt --add-drop-table --quote-names "
+# add events to MySQL dump if supported
+{ mysqldump --help | grep ^events ; } >/dev/null 2>&1 &&
+  MYSQLDUMPFLAGS="${MYSQLDUMPFLAGS} --events "
 MYSQLDUMPNOLOCK=" --skip-lock-tables "
 MYSQLPREFIX="mysqldump"
 OPENLDAPDUMP="openldapdump.ldif"
