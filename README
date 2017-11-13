@@ -1,0 +1,3 @@
+fgn-backup is a modular backup script originally developed to create
+server and database backups of a hosted server, and copy the backups
+to an FTP server.
