@@ -1,6 +1,6 @@
 # fgn-backup module to upload contents of cache directory to an FTP server
 # version @@VERSION@@
-#   Copyright (C) 2007-2012 Erik Auerswald <auerswald@fg-networking.de>
+#   Copyright (C) 2007-2012,2022 Erik Auerswald <auerswald@fg-networking.de>
 #   Copyright (C) 2006-2008,2011 Jörg Mayer <jmayer@fg-networking.de>
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ ftp_upload()
     test -x "$(which ftp)" || { echo "ERROR: could not find ftp" ; return 1 ; }
 
     local ftplog=$(mktemp /tmp/ftplog.$$.XXXXXXXXXX)
-    trap "rm -f $ftplog" 0 1 2 3 5 15
+    trap "rm -f $ftplog" 0
     # failure to create a temporary ftp log file is not fatal
     test -n "$ftplog" && test -r "$ftplog" ||
         echo "ERROR: could not create temporary ftp log file"
